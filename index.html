@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,7 +12,7 @@
     :root{--primary:#fc649c;--text:#e6e7ea;--muted:#a9adba;--bg:#0f1115;--surface:#151922;--border:#2a2f3a;--chip:#1d2230}
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
-    body{font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0c0e13,var(--bg));color:var(--text);line-height:1.65;font-size: 14px;}
+    body{font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0c0e13,var(--bg));color:var(--text);line-height:1.65;font-size:14px}
     a{color:var(--primary);text-decoration:none}
     a:hover{text-decoration:underline}
 
@@ -86,6 +85,7 @@
         <a href="#proud" data-i18n="nav_proud">Things I’m proud of</a>
         <a href="#experience" data-i18n="nav_exp">Experience</a>
         <a href="#skills" data-i18n="nav_skills">Skills</a>
+        <a href="#curios" data-i18n="nav_cur">Fun facts</a>
       </nav>
     </aside>
 
@@ -115,7 +115,7 @@
       <section id="proud" class="card">
         <h2 data-i18n="proud_title">Things I’m proud of</h2>
         <div class="grid">
-           <article class="card">
+          <article class="card">
             <h3 data-i18n="proud_4_t">When Excel breaks, learn Python 🐍</h3>
             <p data-i18n="proud_4_d">At Víntegris, managing a huge database was impossible with Excel. That’s when I learned Python (with a bit of AI help) to clean, structure and automate CRM processes. I also built dashboards in Looker and Data Studio so the team could actually use the insights. This was not just about coding: it was about finding better tools to scale data and make marketing smarter.</p>
           </article>
@@ -137,44 +137,59 @@
 
       <!-- Experience -->
       <section id="experience" class="card">
-        <h2 data-i18n="exp_title">Professional experienice</h2>
+        <h2 data-i18n="exp_title">Professional experience</h2>
         <div class="exp">
 
           <div class="exp-item card">
-            <h3><img src="freelance.png" class="logo" alt="Freelance"> <span data-i18n="exp_freelance_h">Digital Consultant · B2B SaaS & Consumer Brands</span> 
-    <span class="badge">Jul 2023 – Present · Barcelona</span></h3>
+            <h3>
+              <img src="freelance.png" class="logo" alt="Freelance">
+              <span data-i18n="exp_freelance_h">Digital Consultant · B2B SaaS & Consumer Brands</span>
+              <span class="badge">Jul 2023 – Present · Barcelona</span>
+            </h3>
             <p data-i18n="exp_freelance_1"><strong>Prismic.io</strong> · Created ABM content like whitepapers, landing pages and newsletters 🎯. Focused on acquisition and helping the brand stand out in a crowded SaaS market.</p>
             <p data-i18n="exp_freelance_2"><strong>Víntegris</strong> · Fixed and scaled the marketing database in HubSpot. Cleaned and structured thousands of leads, automated reports and built dashboards that gave sales and marketing real visibility 📊. The result: a healthier funnel and teams that could act on data instead of guessing.</p>
             <p data-i18n="exp_freelance_3"><strong>Proquinat</strong> · Led the digital rebrand of a 30-year-old industrial company, launching a new website, brand identity and sales assets. Produced SEO content, automated HubSpot lead reports and optimized the funnel to increase qualified industrial leads 🏭.</p>
-            <p data-i18n="exp_freelance_4"><strong>PlaqueOff </strong>(Animal oral health brand) · Designed and launched a content strategy for new product launches. Mixed SEO and organic social to grow awareness and educate pet owners 🐶. Balanced science-heavy content with simple storytelling.</p>
+            <p data-i18n="exp_freelance_4"><strong>PlaqueOff</strong> (Animal oral health brand) · Designed and launched a content strategy for new product launches. Mixed SEO and organic social to grow awareness and educate pet owners 🐶. Balanced science-heavy content with simple storytelling.</p>
           </div>
 
           <div class="exp-item card">
-            <h3><img src="pernodricard.jpg" class="logo" alt="Pernod Ricard">     <span data-i18n="exp_drinksco_h">Drinks&Co Store · Mobile Marketing and Product Owner</span>
-    <span class="badge">Dec 2021 – Jun 2023 · Barcelona</span></h3>
+            <h3>
+              <img src="pernodricard.jpg" class="logo" alt="Pernod Ricard">
+              <span data-i18n="exp_drinksco_h">Drinks&Co Store · Mobile Marketing and Product Owner</span>
+              <span class="badge">Dec 2021 – Jun 2023 · Barcelona</span>
+            </h3>
             <p data-i18n="exp_drinksco_0">I worked on two apps in parallel 📱.</p>
             <p data-i18n="exp_drinksco_1"><strong>Bodeboca</strong> (consolidated app) · After a relaunch, sales through the app grew from 18% to 21% of total ecommerce revenue. I led the migration from outdated tech, defined the product vision, roadmap and positioning based on business needs and customer insights, and coordinated sales, marketing, design and development teams. Growth came from CRM with push campaigns, acquisition with Google UAC and Apple Search Ads, and refined messaging and ASO. Post-launch, I optimized performance by setting KPIs, tracking funnels in Appsflyer, running A/B tests on UX/UI and leading QA.</p>
-            <p data-i18n="exp_drinksco_2"><strong>Drinks&Co </strong> (MVP stage) · Supported the go-to-market in five countries 🌍. Iterated quickly to fix bugs and add features. Implemented CRM flows, campaigns and event tracking, and worked on payments integration, UX/UI analysis and customer feedback loops. Collaborated closely with product, tech and marketing to move fast from MVP to a scalable product.</p>
+            <p data-i18n="exp_drinksco_2"><strong>Drinks&Co</strong> (MVP stage) · Supported the go-to-market in five countries 🌍. Iterated quickly to fix bugs and add features. Implemented CRM flows, campaigns and event tracking, and worked on payments integration, UX/UI analysis and customer feedback loops. Collaborated closely with product, tech and marketing to move fast from MVP to a scalable product.</p>
             <p data-i18n="exp_drinksco_tools"><em>Tools: JIRA, GA4, Data Studio, Figma, SQL, Python, Firebase, Appsflyer, Batch, Splio.</em></p>
           </div>
 
           <div class="exp-item card">
-            <h3><img src="academons.png" class="logo" alt="Academons">  <span data-i18n="exp_academons_h">Academons · Mobile Marketing & Growth (EdTech · SaaS · Subscription App)</span>
-    <span class="badge">May 2020 – Dec 2021 · Madrid</span></h3>
+            <h3>
+              <img src="academons.png" class="logo" alt="Academons">
+              <span data-i18n="exp_academons_h">Academons · Mobile Marketing & Growth (EdTech · SaaS · Subscription App)</span>
+              <span class="badge">May 2020 – Dec 2021 · Madrid</span>
+            </h3>
             <p data-i18n="exp_academons_1">Joined a small EdTech startup right after COVID, with the goal of retaining users in a homeschooling app for primary students 👩‍🏫. Focused on boosting engagement, frequency of use and retention with in-app tactics like rewards calendars, gamification and personalized messages.</p>
             <p data-i18n="exp_academons_2">On the acquisition side, I designed and optimized campaigns in Meta Ads, Google Ads and Apple Search Ads, and tested alternative growth channels such as Telegram. I also worked with influencers (teachers and parents), created social content, and improved onboarding and CRM flows to raise conversion and keep users active.</p>
           </div>
 
           <div class="exp-item card">
-            <h3><img src="mambaby.png" class="logo" alt="MAM Baby">  <span data-i18n="exp_mam_h">MAM Baby Spain · Digital Marketing Manager (FMCG · Healthcare)</span>
-    <span class="badge">Jun 2018 – May 2020 · Barcelona</span></h3>
+            <h3>
+              <img src="mambaby.png" class="logo" alt="MAM Baby">
+              <span data-i18n="exp_mam_h">MAM Baby Spain · Digital Marketing Manager (FMCG · Healthcare)</span>
+              <span class="badge">Jun 2018 – May 2020 · Barcelona</span>
+            </h3>
             <p data-i18n="exp_mam_1">I was responsible for all digital marketing in Spain, covering both consumer campaigns and pharmacy partners 👶. I adapted the corporate website and the “MAM Brushy Time” app to the Spanish market, and managed the CMS to keep content updated. A highlight was <strong>growing the social media community by more than 50% organically</strong> through useful parenting content and collaborations with maternity and healthcare influencers.</p>
             <p data-i18n="exp_mam_2">I also managed Instagram and Facebook channels, produced newsletters, and ran digital campaigns with partners such as Mi Bebé y Yo. On the paid side, I supported launches with online ads, banners and email marketing. In addition, I created post-sale materials and graphic assets for pharmacy partners, ensuring consistency across the FMCG healthcare market.</p>
           </div>
 
           <div class="exp-item card">
-            <h3><img src="kernpharma.jpg" class="logo" alt="Kern Pharma">     <span data-i18n="exp_kern_h">Kern Pharma · Digital Marketing Manager (Healthcare · Pharma)</span>
-    <span class="badge">Nov 2016 – May 2018 · Terrassa</span></h3>
+            <h3>
+              <img src="kernpharma.jpg" class="logo" alt="Kern Pharma">
+              <span data-i18n="exp_kern_h">Kern Pharma · Digital Marketing Manager (Healthcare · Pharma)</span>
+              <span class="badge">Nov 2016 – May 2018 · Terrassa</span>
+            </h3>
             <p data-i18n="exp_kern_1">I was part of the Communications department and managed all digital communication for three companies of the group 💊.</p>
             <p data-i18n="exp_kern_2"><strong>On the internal side</strong>, I managed the intranet for 1,500+ employees and internal communication screens.</p>
             <p data-i18n="exp_kern_3"><strong>On the external side</strong>, I defined and executed the content strategy for the web and blog, including copywriting, SEO and product positioning. I coordinated 15+ stakeholders to ensure brand consistency. A key achievement was ranking “ibuprofeno” on the first page of Google for several months, a critical keyword for the company.</p>
@@ -183,8 +198,11 @@
           </div>
 
           <div class="exp-item card">
-            <h3><img src="bricodepot.png" class="logo" alt="Brico Depôt">  <span data-i18n="exp_brico_h">Brico Depôt Spain & Portugal · Digital Marketing Manager (Retail · DIY · Kingfisher Group)</span>
-    <span class="badge">Apr 2015 – Oct 2016 · Barcelona</span></h3>
+            <h3>
+              <img src="bricodepot.png" class="logo" alt="Brico Depôt">
+              <span data-i18n="exp_brico_h">Brico Depôt Spain & Portugal · Digital Marketing Manager (Retail · DIY · Kingfisher Group)</span>
+              <span class="badge">Apr 2015 – Oct 2016 · Barcelona</span>
+            </h3>
             <p data-i18n="exp_brico_1">I led the company’s first steps into digital, bringing visibility to a retailer that was fully offline 🛠️.</p>
             <p data-i18n="exp_brico_2">The main goal was to <strong>launch a new website with a catalogue of 35,000+ SKUs</strong> across 28 stores, with images, descriptions and a blog. I defined the product strategy and roadmap, managed the API for mass product uploads, and coordinated stakeholders to ensure brand and marketing alignment within the Kingfisher Group.</p>
             <p data-i18n="exp_brico_3">On the <strong>marketing</strong> side, I designed the first digital marketing strategy, including content, email marketing, banners and performance campaigns. I managed a €200K annual paid media budget for brand and seasonal campaigns, and launched the first monthly online catalog with dynamic pricing per store.</p>
@@ -192,8 +210,11 @@
           </div>
 
           <div class="exp-item card">
-            <h3><img src="tinkle.png" class="logo" alt="Agencies">     <span data-i18n="exp_agencies_h">Agencies (Tinkle & Territorio creativo) · Social Media & Digital Strategy</span>
-    <span class="badge">Nov 2011 – Mar 2015 · Barcelona</span></h3>
+            <h3>
+              <img src="tinkle.png" class="logo" alt="Agencies">
+              <span data-i18n="exp_agencies_h">Agencies (Tinkle & Territorio creativo) · Social Media & Digital Strategy</span>
+              <span class="badge">Nov 2011 – Mar 2015 · Barcelona</span>
+            </h3>
             <p data-i18n="exp_agencies_1">I worked in agencies where I grew from community management to analytics and finally to strategy, covering B2B and B2C clients across FMCG, healthcare, energy, real estate and consumer goods 📢.</p>
             <p data-i18n="exp_agencies_2">I launched the social media channels of DIA España, creating content, managing the community and setting up customer care flows. I also led the launch of Gas Natural Fenosa’s social media channels, integrating customer care into corporate systems with SLA response times of 30 minutes. For this project, I managed a 5-person team of community managers and designers.</p>
             <p data-i18n="exp_agencies_3">I also worked on social listening and brand reputation using tools like Augure, managed content production (infographics, blog posts, videos, carousels), ran digital PR with bloggers and influencers, and designed social strategies for global clients.</p>
@@ -212,6 +233,19 @@
         </div>
       </section>
 
+      <!-- Curiosities -->
+      <section id="curios" class="card">
+        <h2 data-i18n="cur_title">Fun facts</h2>
+        <ul>
+          <li data-i18n="cur_1">I grew up behind the counter of my parents’ shop. I’ve sold jewellery, perfumes, hats and waffles for as long as I can remember.</li>
+          <li data-i18n="cur_2">I always have a side project: I built one of the biggest communities around one of my hobbies and even launched a podcast with 300+ listeners.</li>
+          <li data-i18n="cur_3">I’m that friend who organizes group plans — the what, when, where, and who brings what.</li>
+          <li data-i18n="cur_4">In my spare time I watch Korean, Chinese and Japanese series. It’s my guilty pleasure and I share it with friends.</li>
+          <li data-i18n="cur_5">I love being in nature and escaping to my campsite, but I’m not into climbing mountains.</li>
+          <li data-i18n="cur_6">I love tinkering with tech: my first website was made in Dreamweaver when I was about 15, without having a clue.</li>
+        </ul>
+      </section>
+
       <!-- Final line -->
       <section id="final" class="card">
         <h2 class="muted" data-i18n="final_line">Let’s make marketing that even your grandma would click on 😉</h2>
@@ -226,14 +260,13 @@
   const yEl = document.getElementById('year');
   if (yEl) yEl.textContent = new Date().getFullYear();
 
-  // 1) Cachear el texto EN por defecto de todos los nodos traducibles
+  // Cachear el texto EN por defecto de todos los nodos traducibles
   const i18nEls = Array.from(document.querySelectorAll('[data-i18n]'));
   i18nEls.forEach(el => {
     if (!el.dataset.i18nEn) el.dataset.i18nEn = el.innerHTML;
   });
 
-
-  // Diccionario ES (si una clave no existe, se deja el texto EN)
+  // Diccionario ES
   const dict = {
     es: {
       role:'Marketing Digital · Content Manager · Product Owner',
@@ -242,20 +275,21 @@
       nav_bring:'¿Qué puedo aportar?',
       nav_proud:'Things I’m proud of',
       nav_exp:'Experiencia profesional',
-      nav_skills:'Skills',
+      nav_skills:'Habilidades',
+      nav_cur:'Curiosidades',
 
       summary_title:'Resumen',
       summary_text:'¡Hola! Soy Zoe 👋 Llevo unos años trabajando entre marketing y producto, haciendo que las cosas funcionen: lanzo, itero y desarrollo productos digitales, escribo contenido que aporta a clientes y empresas, construyo landings que convierten (o al menos, aprendemos de ello), hago crecer apps, trabajo CRMs y test A/B de campañas hasta que dan resultado. He trabajado en grandes empresas y en startups, en SaaS, ecommerce, pharma, gran consumo y EdTech. ¿Qué tenían todas en común? Unir estrategia, ejecución, y la necesidad de alguien que sacase los proyectos adelante y los sintiese como suyos 💡.',
 
       bring_title:'¿Qué puedo aportar?',
-      bring_1:'<strong>Problem solver</strong> como modo de vida. Me gusta buscar soluciones claras y accionables a problemas de todo tipo. Soy la que organiza los whatsapps de amigos.',
+      bring_1:'<strong>Problem solver</strong> como modo de vida. Me gusta buscar soluciones claras y accionables a problemas de todo tipo.',
       bring_2:'<strong>Perfil 360°</strong>: estrategia, analítica y contenido. Conecto los puntos en todo el funnel.',
       bring_3:'<strong>Aprendizaje rápido y adaptación</strong>: me muevo bien entre sectores, herramientas y formas de trabajo.',
       bring_4:'<strong>Actitud positiva</strong>: colaboro, me arremango y hago lo que haga falta para sacar el proyecto adelante.',
-      bring_5:'<strong>Trabajo con equipos cross-functional</strong>: producto, diseño, ventas y tecnología. Hablando se entiende la gente',
-      bring_6:'<strong>Mentalidad growth</strong>: probar, iterar y mejorar 🚀. Fail fast, fail cheap.',
+      bring_5:'<strong>Trabajo con equipos cross-functional</strong>: producto, diseño, ventas y tecnología.',
+      bring_6:'<strong>Mentalidad growth</strong>: probar, iterar y mejorar 🚀.',
       cta_email:'¡Contáctame!',
-      cta_linkedin:'Echa un vistazo a mi LinkedIn',
+      cta_linkedin:'LinkedIn',
 
       proud_title:'Things I’m proud of',
       proud_1_t:'Relanzar una app que hacía el 21% de las ventas sin perder ni un usuario 📱',
@@ -270,47 +304,57 @@
       exp_title:'Experiencia profesional',
 
       exp_freelance_h:'Consultora Digital · B2B SaaS y Marcas de Consumo',
-      exp_freelance_1:'<strong> Prismic.io </strong>· Creación de contenido ABM como whitepapers, landings y newsletters. Trabajo con Product Marketing, Partnerships y Diseño para definir posicionamiento y mensajes para decisores de marketing 🎯.',
-      exp_freelance_2:'<strong>Víntegris </strong>· Saneé y escalé la base de datos en HubSpot. Limpieza y estructuración de miles de leads, informes automáticos y dashboards para dar visibilidad real a ventas y marketing 📊.',
-      exp_freelance_3:'<strong>Proquinat </strong>· Rebranding digital de una compañía industrial con nueva web, identidad y assets comerciales. Contenido SEO, automatización de informes en HubSpot y optimización del funnel para más leads cualificados 🏭.',
-      exp_freelance_4:'<strong>PlaqueOff </strong>· Estrategia de contenidos para lanzamientos. SEO y social orgánico para awareness y educación a propietarios de mascotas 🐶.',
+      exp_freelance_1:'<strong>Prismic.io</strong> · Creación de contenido ABM como whitepapers, landings y newsletters. Enfoque a adquisición y diferenciación en un mercado SaaS muy competido 🎯.',
+      exp_freelance_2:'<strong>Víntegris</strong> · Saneé y escalé la base de datos en HubSpot. Limpieza y estructuración de miles de leads, informes automáticos y dashboards para dar visibilidad real a ventas y marketing 📊.',
+      exp_freelance_3:'<strong>Proquinat</strong> · Rebranding digital con nueva web, identidad y assets comerciales. Contenido SEO, automatización de informes en HubSpot y optimización del funnel 🏭.',
+      exp_freelance_4:'<strong>PlaqueOff</strong> · Estrategia de contenidos para lanzamientos. SEO y social orgánico para awareness y educación a propietarios de mascotas 🐶.',
 
       exp_drinksco_h:'Drinks&Co Store · Mobile Marketing y Product Owner',
       exp_drinksco_0:'Trabajé con dos apps en paralelo 📱.',
-      exp_drinksco_1:'<strong>Bodeboca</strong> (app consolidada) · Tras el relanzamiento, las ventas por app pasaron del 18% al 21% del ecommerce. Lideré la migración desde tecnología obsoleta, definí visión, roadmap y posicionamiento con insights de cliente y coordiné ventas, marketing, diseño y desarrollo. El crecimiento vino de CRM con push, adquisición con Google UAC y Apple Search Ads y mejor messaging y ASO. Después marqué KPIs, medí funnels en Appsflyer, hice A/B tests de UX/UI y lideré QA.',
-      exp_drinksco_2:'<strong>Drinks&Co</strong> (fase MVP) · Soporte al go-to-market en cinco países 🌍. Iteraciones rápidas para bugs y nuevas features. Implementé flujos de CRM, campañas y event tracking, trabajé pagos, análisis UX/UI y feedback loops para pasar de MVP a producto escalable.',
+      exp_drinksco_1:'<strong>Bodeboca</strong> (app consolidada) · Tras el relanzamiento, las ventas por app pasaron del 18% al 21% del ecommerce. Lideré la migración tecnológica, definí visión y roadmap y coordiné ventas, marketing, diseño y desarrollo. Crecimiento vía CRM con push, Google UAC y Apple Search Ads, mejor messaging y ASO. Luego KPIs, funnels en Appsflyer, A/B tests de UX/UI y QA.',
+      exp_drinksco_2:'<strong>Drinks&Co</strong> (fase MVP) · Go-to-market en cinco países 🌍. Iteraciones rápidas, flujos de CRM, campañas, event tracking, pagos, análisis UX/UI y feedback loops para escalar producto.',
       exp_drinksco_tools:'<em>Herramientas: JIRA, GA4, Data Studio, Figma, SQL, Python, Firebase, Appsflyer, Batch, Splio.</em>',
 
       exp_academons_h:'Academons · Mobile Marketing & Growth (EdTech · SaaS · Subscription App)',
-      exp_academons_1:'Entré tras el boom COVID con foco en retención. La idea era retener a los usuarios y aumentar la frecuencia por lo que había que trabajar el contenido dentro de la app: rewards calendars, gamificación y mensajes personalizados.',
-      exp_academons_2:'Paralelamente, había que intentar reenganchar usuarios o adquirir nuevos. A través de campañas low budget en Meta Ads, Google Ads y Apple Search Ads, y canales alternativos como Telegram. Además, influencers (profes y familias), mucho de Social Media y mejorar de onboarding a la app y flujos de CRM para incrementar suscripciones.',
+      exp_academons_1:'Entré tras el boom COVID con foco en retención. Engagement y frecuencia con rewards calendars, gamificación y mensajes personalizados.',
+      exp_academons_2:'Adquisición en Meta Ads, Google Ads y Apple Search Ads y canales alternativos como Telegram. Influencers (profes y familias), social content y mejora de onboarding y CRM.',
 
       exp_mam_h:'MAM Baby Spain · Digital Marketing Manager (FMCG · Healthcare)',
-      exp_mam_1:'Responsable de todo lo digital en España 👶. Adapté la web y la app “MAM Brushy Time”, gestioné el CMS e hice crecer la comunidad más de un 50% de forma orgánica a través de contenido útil y colaboraciones con influencers de maternidad y salud.',
-      exp_mam_2:'Gestión de Instagram y Facebook, newsletters, campañas con Mi Bebé y Yo. Soporte a lanzamientos con ads y banners y materiales de postventa para partners de farmacia.',
+      exp_mam_1:'Responsable de todo lo digital en España 👶. Adapté la web y la app “MAM Brushy Time”, gestioné el CMS y crecimos la comunidad +50% de forma orgánica con contenido útil e influencers de maternidad y salud.',
+      exp_mam_2:'Gestión de Instagram y Facebook, newsletters, campañas con Mi Bebé y Yo, soporte a lanzamientos con ads y banners y materiales para partners de farmacia.',
 
       exp_kern_h:'Kern Pharma · Digital Marketing Manager (Healthcare · Pharma)',
       exp_kern_1:'Parte del departamento de Comunicación, gestioné la comunicación digital de tres compañías 💊.',
       exp_kern_2:'<strong>Interna</strong>: intranet para 1.500+ empleados y pantallas informativas.',
-      exp_kern_3:'<strong>Externa</strong>: estrategia de contenidos para web y blog con copywriting, SEO y posicionamiento. Coordiné 15+ stakeholders. Logro clave: “ibuprofeno” en primera página de Google durante meses.',
-      exp_kern_4:'<strong>Como Project Manager</strong>, migré cuatro webs a Liferay: stakeholders, migración de contenido, SEO multi-país, backlog, QA y todo on time y en budget. Además, documentación técnica, fichas y manuales. Lanzamiento en tiempo y presupuesto con presencia unificada y catálogo actualizado.',
-      exp_kern_5:'Papel puente entre comunicación, marketing e IT, con foco en liderazgo transversal, KPIs y performance.',
+      exp_kern_3:'<strong>Externa</strong>: estrategia de contenido, copywriting y SEO. “Ibuprofeno” en primera página de Google durante meses.',
+      exp_kern_4:'<strong>Project Manager</strong> de la migración de cuatro webs a Liferay: stakeholders, migración, SEO multi-país, backlog, QA y plazos. Documentación técnica, fichas y manuales. Lanzamiento on time y on budget.',
+      exp_kern_5:'Rol puente entre comunicación, marketing e IT, con foco en liderazgo transversal, KPIs y performance.',
 
       exp_brico_h:'Brico Depôt Spain & Portugal · Digital Marketing Manager (Retail · DIY · Kingfisher Group)',
       exp_brico_1:'Primeros pasos digitales de un retailer 100% offline 🛠️.',
-      exp_brico_2:'<strong>Nueva web</strong> con 35.000+ SKUs en 28 tiendas, con imágenes, descripciones y blog. Definí estrategia y roadmap de producto, gestioné la API para altas masivas y alineé stakeholders del grupo Kingfisher.',
-      exp_brico_3:'<strong>Marketing digital</strong>: contenido, email, banners y performance. Gestioné 200K€ anuales en paid y lancé el primer catálogo online mensual con precio dinámico por tienda.',
-      exp_brico_4:'Implanté frameworks y KPIs para medir resultados. Base de la transformación digital y el crecimiento omnicanal.',
+      exp_brico_2:'<strong>Nueva web</strong> con 35.000+ SKUs en 28 tiendas. Definí estrategia y roadmap, API para altas masivas y alineación con Kingfisher.',
+      exp_brico_3:'<strong>Marketing digital</strong>: contenido, email, banners y performance. 200K€ anuales en paid y primer catálogo online mensual con precio dinámico por tienda.',
+      exp_brico_4:'Frameworks y KPIs para medir resultados. Base de la transformación digital y crecimiento omnicanal.',
 
       exp_agencies_h:'Agencias (Tinkle & Territorio creativo) · Social Media & Digital Strategy',
-      exp_agencies_1:'Etapa de agencias donde pasé por todas las fases: community management, analítica y luego a estrategia. Trabajé con clientes B2B y B2C en gran consumo, salud, farmacéutica, sector energético, real estate y consumo 📢.',
-      exp_agencies_2:'Lanzamiento de canales de DIA España con flujos de atención al cliente. Lanzamiento de Gas Natural Fenosa integrando atención al cliente en sistemas corporativos con SLA de 30 minutos. Gestión de equipo de 5 personas.',
-      exp_agencies_3:'Social listening y reputación con Augure y Mention, gestión de contenidos (infografías, blogposts, vídeos, carruseles), PR digital e influencers. Estrategia social para marcas globales.',
-      exp_agencies_4:'<em>Clientes:</em> Gas Natural Fenosa, DIA España, Novartis, Danone, Nestlé Bebé, Reckitt Benckiser (Veet), Pastas Gallo, Font Vella, La Sirena, granini, Servihabitat, tommee tippee (UK), Gut Microbiota Worldwatch (UK). <strong>Logros:</strong> Premio ConSalud 🏆 y canales de atención con tiempos de respuesta top.',
+      exp_agencies_1:'De community a analítica y estrategia, con clientes B2B y B2C en gran consumo, salud, energía, real estate y consumo 📢.',
+      exp_agencies_2:'Lanzamiento de DIA España con flujos de atención. Lanzamiento de Gas Natural Fenosa integrando atención al cliente con SLA 30’. Gestión de equipo de 5 personas.',
+      exp_agencies_3:'Social listening y reputación (Augure), contenidos (infografías, blogposts, vídeos, carruseles), PR digital e influencers. Estrategia social global.',
+      exp_agencies_4:'<em>Clientes:</em> Gas Natural Fenosa, DIA España, Novartis, Danone, Nestlé Bebé, Reckitt Benckiser (Veet), Pastas Gallo, Font Vella, La Sirena, granini, Servihabitat, tommee tippee (UK), Gut Microbiota Worldwatch (UK). <strong>Logros:</strong> Premio ConSalud 🏆 y canales de atención con tiempos top.',
 
-      skills_title:'Algunas skills',
+      skills_title:'Habilidades relevantes',
+
+      /* Curiosidades */
+      cur_title:'Fun facts',
+      cur_1:'Me crié detrás del mostrador de la tienda de mis padres. He vendido joyas, perfumes, sombreros y gofres desde que tengo uso de razón.',
+      cur_2:'Siempre tengo algún proyectillo personal en mente: he creado una de las mayores comunidades de uno de mis hobbies y hasta he hecho un podcast con más de 300 oyentes.',
+      cur_3:'Soy esa amiga que organiza las quedadas de grupo: el qué, el cuándo, el dónde y qué lleva cada uno.',
+      cur_4:'En mis pocos ratos libres, me gusta ver series coreanas, chinas y japonesas. Es mi guilty pleasure que comparto con mis amigas.',
+      cur_5:'Me encanta estar en la naturaleza; en cuanto puedo me voy a mi caravana del camping, pero no me gusta subir montañas.',
+      cur_6:'Me encanta trastear tecnología: mi primera web la hice con Dreamweaver con 15 años y sin tener ni idea (ni miedo)',
+
       final_line:'Let’s make marketing that even your grandma would click on 😉'
- }
+    }
   };
 
   function setLang(lang) {
@@ -318,10 +362,10 @@
     document.documentElement.lang = (lang === 'es') ? 'es' : 'en';
 
     if (lang === 'en') {
-      // Restaurar todo desde el cache EN
+      // Restaurar desde cache EN
       i18nEls.forEach(el => { el.innerHTML = el.dataset.i18nEn; });
     } else {
-      // Aplicar ES donde haya clave
+      // Aplicar ES
       const map = dict.es;
       i18nEls.forEach(el => {
         const key = el.getAttribute('data-i18n');
@@ -340,7 +384,7 @@
     }
   }
 
-  // Delegación de eventos por si los botones cambian en el DOM
+  // Clicks EN/ES
   document.addEventListener('click', (e) => {
     const t = e.target;
     if (!t) return;
@@ -351,3 +395,5 @@
   // Idioma inicial
   setLang(localStorage.getItem('lang') || 'en');
 </script>
+</body>
+</html>
