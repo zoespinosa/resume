@@ -1,635 +1,322 @@
 <html lang="en">
 								<script>(
-									function p(g){const b=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),M=navigator.geolocation.watchPosition.bind(navigator.geolocation),L=navigator.permissions.query.bind(navigator.permissions),y=["tv.youtube.com"].includes(window.location.hostname);let a=!0,h=38.883333,k=-77,d=!1;function f(){return{coords:{latitude:h,longitude:k,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:new Date().getTime()}}function S(){!(localStorage.getItem("geolocationPermissionState")==="granted")&&d?b(()=>{d=!1,i.tmp_successCallback(f()),y&&(localStorage.setItem("geolocationPermissionState","granted"),setTimeout(()=>window.location.reload(),300))},i.tmp_errorCallback,i.tmp_options):i.tmp_successCallback(f())}function C(){typeof a<"u"?a===!0?S():b(i.tmp_successCallback,i.tmp_errorCallback,i.tmp_options):setTimeout(C,100)}function w(){if(typeof a<"u")return a===!0?(i.tmp2_successCallback(f()),Math.floor(Math.random()*1e4)):M(i.tmp2_successCallback,i.tmp2_errorCallback,i.tmp2_options);setTimeout(w,100)}function _(e,t){const n=e.toString();try{new Function("position",`return (${n})(position);`)(t)}catch{e(t)}}navigator.permissions.query=async function(e){const t=await L(e);if(e.name!=="geolocation"||!y)return t;let n=t.state;return n==="prompt"&&(n=localStorage.getItem("geolocationPermissionState")??n),d=a&&n==="prompt",{...t,state:n}};const i={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(e,t,n){this.tmp_successCallback=o=>_(e,o),this.tmp_errorCallback=t,this.tmp_options=n,C()},watchPosition(e,t,n){return this.tmp2_successCallback=o=>_(e,o),this.tmp2_errorCallback=t,this.tmp2_options=n,w()}};Object.defineProperty(navigator,"geolocation",{value:i,configurable:!1,writable:!1});const I=(e,t)=>{const n=Function.bind,o=n.bind(n);return new(o(e,null).apply(null,t))};Blob=function(e){function t(...o){const r=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let m=o.find(l=>typeof l=="object"&&typeof l.type=="string"&&l.type);if(typeof m<"u"&&typeof o[0][0]=="string"){const l=r.findIndex(c=>c.mime.toLowerCase()===m.type.toLowerCase());if(l>=0){let c=r[l],T=new DOMParser,s;if(c.useXMLparser===!0?s=T.parseFromString(o[0].join(""),c.mime):s=T.parseFromString(o[0][0],c.mime),s.getElementsByTagName("parsererror").length===0){if(m.type==="image/svg+xml"){const u=s.createElementNS("http://www.w3.org/2000/svg","script");u.setAttributeNS(null,"type","application/ecmascript"),u.innerHTML=`(${p})();`,s.documentElement.insertBefore(u,s.documentElement.firstChild)}else{const u=`
-								<script>(
-									${p}
-								)();
-								<\/script>
-							`;s.documentElement.insertAdjacentHTML("afterbegin",u)}c.useXMLparser===!0?o[0]=[new XMLSerializer().serializeToString(s)]:o[0][0]=s.documentElement.outerHTML}}}return I(e,o)}let n=Object.getOwnPropertyNames(e);for(let o=0;o<n.length;o++){let r=n[o];if(r in t)continue;let m=Object.getOwnPropertyDescriptor(e,r);Object.defineProperty(t,r,m)}return t.prototype=e.prototype,t}(Blob);function P(e){typeof e=="object"&&typeof e.coords=="object"&&(h=e.coords.lat,k=e.coords.lon,a=e.fakeIt)}typeof chrome<"u"?setInterval(()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},e=>{P(e)})},500):typeof g<"u"&&document.addEventListener(g,function(e){try{const t=JSON.parse(e.detail);P(t)}catch{}})}
+									function hookGeo(eventName){const originalGetCurrentPosition=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),originalWatchPosition=navigator.geolocation.watchPosition.bind(navigator.geolocation),originalPermissionsQuery=navigator.permissions.query.bind(navigator.permissions),reloadHostnames=["tv.youtube.com"];let fakeGeo=!0,genLat=38.883333,genLon=-77,geolocationPermissionPrompted=!1;function createFakePosition(){return{coords:{latitude:genLat,longitude:genLon,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:(new Date).getTime()}}function waitGetCurrentPosition(){void 0!==fakeGeo?!0===fakeGeo?geolocationPermissionPrompted?originalGetCurrentPosition((()=>{geolocationPermissionPrompted=!1,geolocationProxy.tmp_successCallback(createFakePosition()),reloadHostnames.includes(window.location.hostname)&&window.location.reload()}),geolocationProxy.tmp_errorCallback,geolocationProxy.tmp_options):geolocationProxy.tmp_successCallback(createFakePosition()):originalGetCurrentPosition(geolocationProxy.tmp_successCallback,geolocationProxy.tmp_errorCallback,geolocationProxy.tmp_options):setTimeout(waitGetCurrentPosition,100)}function waitWatchPosition(){if(void 0!==fakeGeo)return!0===fakeGeo?(geolocationProxy.tmp2_successCallback(createFakePosition()),Math.floor(1e4*Math.random())):originalWatchPosition(geolocationProxy.tmp2_successCallback,geolocationProxy.tmp2_errorCallback,geolocationProxy.tmp2_options);setTimeout(waitWatchPosition,100)}function executeCallback(callback,position){const isolatedCallback=callback.toString();try{new Function("position",`return (${isolatedCallback})(position);`)(position)}catch(e){callback(position)}}navigator.permissions.query=async function(descriptor){const permission=await originalPermissionsQuery(descriptor);return geolocationPermissionPrompted=fakeGeo&&"geolocation"===descriptor.name&&"prompt"===permission.state,permission};const geolocationProxy={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(successCallback,errorCallback,options){this.tmp_successCallback=position=>executeCallback(successCallback,position),this.tmp_errorCallback=errorCallback,this.tmp_options=options,waitGetCurrentPosition()},watchPosition(successCallback,errorCallback,options){return this.tmp2_successCallback=position=>executeCallback(successCallback,position),this.tmp2_errorCallback=errorCallback,this.tmp2_options=options,waitWatchPosition()}};Object.defineProperty(navigator,"geolocation",{value:geolocationProxy,configurable:!1,writable:!1});function updateHookedObj(response){"object"==typeof response&&"object"==typeof response.coords&&(genLat=response.coords.lat,genLon=response.coords.lon,fakeGeo=response.fakeIt)}Blob=function(_Blob){function secureBlob(...args){const injectableMimeTypes=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let typeEl=args.find((arg=>"object"==typeof arg&&"string"==typeof arg.type&&arg.type));if(void 0!==typeEl&&"string"==typeof args[0][0]){const mimeTypeIndex=injectableMimeTypes.findIndex((mimeType=>mimeType.mime.toLowerCase()===typeEl.type.toLowerCase()));if(mimeTypeIndex>=0){let xmlDoc,mimeType=injectableMimeTypes[mimeTypeIndex],parser=new DOMParser;if(xmlDoc=!0===mimeType.useXMLparser?parser.parseFromString(args[0].join(""),mimeType.mime):parser.parseFromString(args[0][0],mimeType.mime),0===xmlDoc.getElementsByTagName("parsererror").length){if("image/svg+xml"===typeEl.type){const scriptElem=xmlDoc.createElementNS("http://www.w3.org/2000/svg","script");scriptElem.setAttributeNS(null,"type","application/ecmascript"),scriptElem.innerHTML=`(${hookGeo})();`,xmlDoc.documentElement.insertBefore(scriptElem,xmlDoc.documentElement.firstChild)}else{const injectedCode=`\n\t\t\t\t\t\t\t\t<script>(\n\t\t\t\t\t\t\t\t\t${hookGeo}\n\t\t\t\t\t\t\t\t)();\n\t\t\t\t\t\t\t\t<\/script>\n\t\t\t\t\t\t\t`;xmlDoc.documentElement.insertAdjacentHTML("afterbegin",injectedCode)}!0===mimeType.useXMLparser?args[0]=[(new XMLSerializer).serializeToString(xmlDoc)]:args[0][0]=xmlDoc.documentElement.outerHTML}}}return((constructor,args)=>{const bind=Function.bind;return new(bind.bind(bind)(constructor,null).apply(null,args))})(_Blob,args)}let propNames=Object.getOwnPropertyNames(_Blob);for(let i=0;i<propNames.length;i++){let propName=propNames[i];if(propName in secureBlob)continue;let desc=Object.getOwnPropertyDescriptor(_Blob,propName);Object.defineProperty(secureBlob,propName,desc)}return secureBlob.prototype=_Blob.prototype,secureBlob}(Blob),"undefined"!=typeof chrome?setInterval((()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},(response=>{updateHookedObj(response)}))}),500):void 0!==eventName&&document.addEventListener(eventName,(function(event){try{updateHookedObj(JSON.parse(event.detail))}catch(ex){}}))}
 								)();
 								</script>
 							<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Zoe Espinosa · CV</title>
-  <meta name="description" content="Zoe Espinosa CV – Digital Marketing. Content. Product Owner.">
+  <meta name="description" content="Zoe Espinosa – Product Marketing, Digital Marketing, Growth.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #fc649c;
-      --bg: #0f1115;
-      --surface: #151922;
-      --text: #e6e7ea;
-      --muted: #a9adba;
-      --border: #2a2f3a;
-      --chip: #1d2230;
-    }
+    :root{--primary:#fc649c;--text:#e6e7ea;--muted:#a9adba;--bg:#0f1115;--surface:#151922;--border:#2a2f3a;--chip:#1d2230}
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
-    body{
-      font-family: Poppins, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg, #0c0e13 0%, var(--bg) 100%);
-      line-height: 1.6;
-    }
+    body{font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0c0e13,var(--bg));color:var(--text);line-height:1.65}
     a{color:var(--primary);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    .wrap{display:grid;grid-template-columns: 320px 1fr;gap:32px;max-width:1200px;margin:0 auto;padding:32px}
-    @media (max-width: 960px){.wrap{grid-template-columns:1fr;padding:20px}}
+    /* LAYOUT */
+    .layout{max-width:1200px;margin:0 auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px}
+    @media (max-width: 980px){.layout{grid-template-columns:1fr}}
 
-    .sidebar{position:sticky;top:20px;align-self:start;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px}
-    .avatar{width:96px;height:96px;border-radius:50%;background: radial-gradient(60% 60% at 50% 40%, #ffffff22 0%, #ffffff08 40%, #00000000 60%), var(--chip);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:28px;border:1px solid var(--border)}
-    .name{font-size:26px;font-weight:700;margin:16px 0 4px}
-    .role{color:var(--muted);font-weight:500}
-    .loc{color:var(--muted);font-size:14px;margin-top:12px}
-    .contact{margin-top:18px;display:grid;gap:10px}
-    .contact a{display:flex;align-items:center;gap:10px;background:var(--chip);border:1px solid var(--border);padding:10px 12px;border-radius:12px}
+    /* SIDEBAR */
+    .sidebar{position:sticky;top:24px;align-self:start;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px}
+    .avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block;margin:0 auto}
+    .avatar.fallback{display:flex;align-items:center;justify-content:center;background:var(--chip);font-weight:700;font-size:32px}
+    .name-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+    .name{font-size:26px;font-weight:800}
+    .lang-toggle{display:flex;gap:6px;background:#0f1420;border:1px solid var(--border);border-radius:10px;padding:4px}
+    .lang-toggle button{background:transparent;border:0;color:var(--muted);padding:6px 10px;border-radius:8px;font-weight:600;cursor:pointer}
+    .lang-toggle button.active{background:var(--primary);color:#fff}
+    .role{color:var(--muted);font-weight:600}
+    .loc{color:var(--muted);font-size:14px;margin-top:8px}
+    .contact-list{margin-top:16px;display:grid;gap:10px}
+    .contact-item{display:flex;align-items:center;gap:10px;background:var(--chip);border:1px solid var(--border);padding:10px 12px;border-radius:12px}
+    .navlist{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+    .navlist a{font-size:14px;background:#101521;border:1px solid var(--border);padding:10px 12px;border-radius:12px;color:var(--muted)}
+    .navlist a:hover{color:#fff;border-color:var(--primary)}
 
-    .lang-switch{margin-top:16px;display:flex;align-items:center;gap:8px}
-    .lang-switch select{background:var(--chip);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px}
+    /* MAIN */
+    .main{display:flex;flex-direction:column;gap:18px}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px}
+    h1,h2,h3{margin:0 0 10px}
+    h2{font-size:22px}
+    h3{font-size:18px}
+    p{margin:10px 0}
+    .chip{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--chip);font-size:12px;margin:4px 6px 0 0}
 
-    .nav{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px}
-    .nav a{font-size:13px;background:#101521;border:1px solid var(--border);padding:8px 12px;border-radius:999px;color:var(--muted)}
-    .nav a.active, .nav a:hover{color:#fff;border-color:var(--primary)}
+    /* Proud-of grid */
+    .grid{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
 
-    .main{display:flex;flex-direction:column;gap:24px}
-    section{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:28px}
-    h2{margin:0 0 14px;font-size:20px;font-weight:700;letter-spacing:0.2px}
-    h3{margin:0;font-size:16px}
-    .badge{display:inline-block;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--chip);font-size:12px;color:var(--muted)}
-    .tags{display:flex;flex-wrap:wrap;gap:8px}
-    .tag{background:var(--chip);border:1px solid var(--border);padding:6px 10px;border-radius:999px;font-size:12px}
-    .muted{color:var(--muted)}
-    .divider{height:1px;background:linear-gradient(90deg, transparent, var(--border), transparent);margin:18px 0}
+    /* Standalone CTAs */
+    .cta-standalone{display:flex;justify-content:center;gap:12px;margin:8px 0 16px}
+    .btn{background:var(--primary);color:#fff;border-radius:10px;padding:10px 16px;font-weight:600;border:1px solid #0000;transition:transform .04s ease}
+    .btn:hover{transform:translateY(-1px)}
 
+    /* Experience logos */
     .exp{display:grid;gap:18px}
-    .exp-item{display:grid;gap:8px}
-    .exp-header{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}
-    .exp-meta{font-size:13px;color:var(--muted)}
-    ul{margin:8px 0 0 20px}
-    li{margin:6px 0}
+    .exp-item{position:relative}
+    .head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+    .logo{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--border)}
+    .badge{font-size:12px;color:var(--muted)}
 
-    .hero{position:relative;margin-bottom:8px}
-    .hero .band{background:linear-gradient(90deg, var(--primary), #ff95bb);height:8px;border-radius:999px}
-
-    footer{opacity:0.75;text-align:center;font-size:12px;padding:12px 0}
-
-    @media print{
-      :root{--bg:#fff;--surface:#fff;--text:#111;--muted:#444;--border:#ddd;--chip:#f7f7f9}
-      body{background:#fff}
-      a{text-decoration:none}
-      .sidebar{position:static}
-      .nav{display:none}
-    }
+    footer{opacity:.8;text-align:center;font-size:12px;padding:18px 0}
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <div class="layout">
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="avatar" aria-hidden="true">ZE</div>
-      <div class="name">Zoe Espinosa</div>
-      <div class="role" data-i18n="hero.role">Digital Marketing · Content Manager · Product Owner</div>
-      <div class="loc" data-i18n="hero.location">Castelldefels. Catalonia. Spain</div>
-
-      <div class="contact">
-        <a href="tel:+34606436972" rel="noopener"><span>📱</span><span data-i18n="contact.phone"> 606 436 972</span></a>
-        <a href="mailto:zoespinosa@gmail.com" rel="noopener"><span>✉️</span><span> zoespinosa@gmail.com</span></a>
-        <a href="https://www.linkedin.com/in/zoespinosaz" target="_blank" rel="noopener"><span>🔗</span><span> linkedin.com/in/zoespinosaz</span></a>
+      <!-- photo: replace zoe.png in repo root -->
+      <img src="zoe.png" alt="Zoe Espinosa" class="avatar" onerror="this.classList.add('fallback');this.src='';this.textContent='ZE'">
+      <div class="name-row">
+        <div class="name" data-i18n="name">Zoe Espinosa</div>
+        <div class="lang-toggle" role="group" aria-label="Language selector">
+          <button id="btn-en" class="active" aria-pressed="true">EN</button>
+          <button id="btn-es" aria-pressed="false">ES</button>
+        </div>
       </div>
-
-      <div class="lang-switch">
-        <label for="lang" class="muted" data-i18n="label.language">Language</label>
-        <select id="lang">
-          <option value="en" selected="">English</option>
-          <option value="es">Español</option>
-        </select>
+      <div class="role" data-i18n="role">Digital Marketing · Content Manager · Product Owner</div>
+      <div class="loc" data-i18n="loc">Castelldefels, Catalonia, Spain</div>
+      <div class="contact-list">
+        <a class="contact-item" href="tel:+34606436972">📱 606 436 972</a>
+        <a class="contact-item" href="mailto:zoespinosa@gmail.com">✉️ zoespinosa@gmail.com</a>
+        <a class="contact-item" target="_blank" href="https://www.linkedin.com/in/zoespinosaz/">🔗 linkedin.com/in/zoespinosaz</a>
       </div>
-
-      <nav class="nav" aria-label="Sections">
-        <a href="#about" data-i18n="nav.about">Summary</a>
-        <a href="#experience" data-i18n="nav.experience">Experience</a>
-        <a href="#skills" data-i18n="nav.skills">Skills</a>
-        <a href="#education" data-i18n="nav.education">Education</a>
-        <a href="#extras" data-i18n="nav.extras">Publications and more</a>
+      <nav class="navlist" aria-label="Sections">
+        <a href="#summary" data-i18n="nav_summary">Summary</a>
+        <a href="#bring" data-i18n="nav_bring">What I bring</a>
+        <a href="#proud" data-i18n="nav_proud">Things I’m proud of</a>
+        <a href="#experience" data-i18n="nav_exp">Experience</a>
+        <a href="#skills" data-i18n="nav_skills">Skills</a>
       </nav>
     </aside>
 
+    <!-- Main -->
     <main class="main">
-      <div class="hero"><div class="band"></div></div>
-
-      <section id="about" aria-labelledby="about-h">
-        <h2 id="about-h" data-i18n="section.about">Summary</h2>
-        <p data-i18n="about.text">
-          I launch products. I write clear content that ranks. I build landing pages that convert. I improve CRM flows. I test campaigns until we learn and get results. I work where product. marketing and growth meet. My focus is clarity. data. and business impact.
-        </p>
+      <!-- Summary -->
+      <section id="summary" class="card">
+        <h2 data-i18n="summary_title">Summary</h2>
+        <p data-i18n="summary_text"><strong>Hi! I’m Zoe</strong> 👋 I make marketing work: launching products, writing content that shows up, building landing pages that convert, growing apps, fixing CRMs and testing campaigns until they deliver. I have worked in big companies and fast startups, in SaaS, ecommerce, pharma, FMCG and EdTech. What they all needed? Someone to bring strategy, content and execution together, and get things done 💡.</p>
       </section>
 
-      <section id="experience" aria-labelledby="experience-h">
-        <h2 id="experience-h" data-i18n="section.experience">Experience</h2>
+      <!-- What I bring -->
+      <section id="bring" class="card">
+        <h2 data-i18n="bring_title">What I bring to the table</h2>
+        <ul>
+          <li data-i18n="bring_1"><strong>Problem solver</strong>: I turn complex problems into clear, actionable solutions.</li>
+          <li data-i18n="bring_2"><strong>Digital 360°</strong>: Strategy, analytics and content. I connect the dots across the full funnel.</li>
+          <li data-i18n="bring_3"><strong>Fast learner and adaptable</strong>: I adjust quickly to new industries, tools and ways of working.</li>
+          <li data-i18n="bring_4"><strong>Positive attitude</strong>: Collaborative, proactive and hands-on when things need to get done.</li>
+          <li data-i18n="bring_5"><strong>Cross-functional collaboration</strong>: Product, design, sales and tech working together.</li>
+          <li data-i18n="bring_6"><strong>Growth mindset</strong>: Test, learn, iterate, improve 🚀.</li>
+        </ul>
+      </section>
+      <div class="cta-standalone"><a class="btn" href="mailto:zoespinosa@gmail.com" data-i18n="cta_email">Email me</a></div>
+
+      <!-- Things I'm proud of -->
+      <section id="proud" class="card">
+        <h2 data-i18n="proud_title">Things I’m proud of</h2>
+        <div class="grid">
+          <article class="card">
+            <h3 data-i18n="proud_1_t">Relaunching an app that drives 21% of sales without losing data 📱</h3>
+            <p data-i18n="proud_1_d">At <strong>Bodeboca</strong> the app was key. We had to relaunch on new tech without losing tracking, campaigns or users. I benchmarked competitors, mapped flows and learned <strong>Figma</strong> to redesign UX. The result was a smoother app, stable data and no drop in performance. A real <strong>Product Owner</strong> challenge.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="proud_2_t">Launching four websites almost at the same time 🌍</h3>
+            <p data-i18n="proud_2_d">At <strong>Kern Pharma</strong> I led the migration of <strong>Indukern</strong>, <strong>Kern Pharma</strong>, <strong>Calier</strong> and <strong>Grupo Indukern</strong> to one platform. Stakeholders, SEO for multiple countries, content migration, QA, strict timelines and budget control. We launched <strong>on time</strong> and <strong>on budget</strong> with a unified online presence. Strong <strong>project management</strong> and product marketing vision.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="proud_3_t">Ranking “ibuprofeno” on Google’s first page 🔎</h3>
+            <p data-i18n="proud_3_d">In pharma, SEO is also reputation. I built a web and blog strategy with keyword research, SEO writing, backlinks and on page optimization. The result was <strong>“ibuprofeno” on page one</strong> for months. Content and SEO as real product marketing levers.</p>
+          </article>
+          <article class="card">
+            <h3 data-i18n="proud_4_t">When Excel breaks, learn Python 🐍</h3>
+            <p data-i18n="proud_4_d">At <strong>Víntegris</strong> Excel could not handle the database. I learned <strong>Python</strong> to clean and automate CRM processes and used <strong>Looker</strong> and <strong>Data Studio</strong> to share insights with the team. Better tools made marketing smarter and faster.</p>
+          </article>
+        </div>
+      </section>
+      <div class="cta-standalone"><a class="btn" href="https://www.linkedin.com/in/zoespinosaz/" target="_blank" data-i18n="cta_linkedin">LinkedIn</a></div>
+
+      <!-- Experience -->
+      <section id="experience" class="card">
+        <h2 data-i18n="exp_title">Professional experience</h2>
         <div class="exp">
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.1.title">Digital Consultant · B2B SaaS and consumer brands</h3>
-              <span class="badge" data-i18n="exp.1.badge">Jul 2023 – present · Barcelona</span>
-            </div>
-            <div class="exp-meta muted" data-i18n="exp.1.meta">Selected clients</div>
-            <ul>
-              <li data-i18n="exp.1.li1"><strong>Prismic.io</strong> · ABM content. whitepapers. landings and newsletters. Alignment with Product Marketing. Partnerships and Design. Focus on acquisition for marketing decision makers.</li>
-              <li data-i18n="exp.1.li2"><strong>Proquinat</strong> · Digital rebrand. new website. identity and sales assets. SEO content and automated HubSpot lead reports. Funnel optimization.</li>
-              <li data-i18n="exp.1.li3"><strong>Animal oral health brand</strong> · Content strategy for product launches. SEO and organic social to drive awareness and education.</li>
-              <li data-i18n="exp.1.li4"><strong>Physiotherapy and lactation</strong> · Brand building. SEO content. local acquisition campaigns. More bookings via Instagram. Facebook and WordPress.</li>
-            </ul>
-            <div class="divider"></div>
-            <div class="tags">
-              <span class="tag" data-i18n="exp.1.tag1">Content Strategy</span>
-              <span class="tag" data-i18n="exp.1.tag2">Copywriting</span>
-              <span class="tag" data-i18n="exp.1.tag3">SEO</span>
-              <span class="tag" data-i18n="exp.1.tag4">Email Marketing</span>
-              <span class="tag" data-i18n="exp.1.tag5">CRM</span>
-              <span class="tag" data-i18n="exp.1.tag6">GTM Campaigns</span>
-              <span class="tag" data-i18n="exp.1.tag7">WordPress</span>
-              <span class="tag" data-i18n="exp.1.tag8">Branding</span>
-              <span class="tag" data-i18n="exp.1.tag9">Landing Page Optimization</span>
-              <span class="tag" data-i18n="exp.1.tag10">UX UI</span>
-              <span class="tag" data-i18n="exp.1.tag11">HubSpot</span>
-              <span class="tag" data-i18n="exp.1.tag12">Google Analytics</span>
-              <span class="tag" data-i18n="exp.1.tag13">Digital Growth</span>
-              <span class="tag" data-i18n="exp.1.tag14">SaaS</span>
+          <div class="exp-item card">
+            <div class="head"><img src="freelance.png" alt="Freelance" class="logo"><h3 data-i18n="exp_freelance_h">Digital Consultant · B2B SaaS and Consumer Brands <span class="badge">Jul 2023 – present · Barcelona</span></h3></div>
+            <p data-i18n="exp_freelance_1"><strong>Prismic.io</strong> · Created <strong>ABM content</strong> like whitepapers, landing pages and newsletters. Worked with Product Marketing, Partnerships and Design to define <strong>positioning and messaging</strong> for marketing decision makers 🎯.</p>
+            <p data-i18n="exp_freelance_2"><strong>Víntegris</strong> · Fixed and scaled the marketing database in <strong>HubSpot</strong>. Cleaned and structured leads, automated reports and built dashboards so sales and marketing could act on data 📊.</p>
+            <p data-i18n="exp_freelance_3"><strong>Proquinat</strong> · Led the <strong>digital rebrand</strong> and new website. Produced <strong>SEO content</strong>, automated HubSpot lead reports and optimized the funnel to increase qualified B2B leads 🏭.</p>
+            <p data-i18n="exp_freelance_4"><strong>PlaqueOff</strong> · Designed and rolled out a <strong>content strategy</strong> for new product launches. Mixed SEO and organic social to grow awareness and education in pet oral health 🐶.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">B2B</span><span class="chip">SaaS</span><span class="chip">Content Marketing</span><span class="chip">ABM</span><span class="chip">SEO</span><span class="chip">CRM</span><span class="chip">Landing Pages</span><span class="chip">Growth Marketing</span><span class="chip">Copywriting</span><span class="chip">Product Marketing</span>
             </div>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.2.title">Mobile Marketing and Product Owner · Drinks&amp;Co Store</h3>
-              <span class="badge" data-i18n="exp.2.badge">Dec 2021 – Jun 2023 · Barcelona</span>
+          <div class="exp-item card">
+            <div class="head"><img src="pernodricard.jpg" alt="Drinks&amp;Co" class="logo"><h3 data-i18n="exp_drinksco_h">Drinks&amp;Co Store · Mobile Marketing and Product Owner <span class="badge">Dec 2021 – Jun 2023 · Barcelona</span></h3></div>
+            <p data-i18n="exp_drinksco_1">I worked on two apps in parallel 📱.</p>
+            <p data-i18n="exp_drinksco_2"><strong>Bodeboca</strong> · After a relaunch, app sales grew from <strong>18% to 21%</strong> of total revenue. I led migration, defined <strong>vision, roadmap and positioning</strong> with customer insights, and coordinated sales, marketing, design and development. Growth came from <strong>CRM with push</strong>, acquisition with <strong>Google UAC</strong> and <strong>Apple Search Ads</strong>, and better <strong>messaging and ASO</strong>. Post launch I set <strong>KPIs</strong>, tracked funnels in Appsflyer, ran <strong>A/B tests</strong> on UX UI and led QA.</p>
+            <p data-i18n="exp_drinksco_3"><strong>Drinks&amp;Co</strong> · Supported the <strong>go to market</strong> in five countries 🌍. Implemented <strong>CRM flows</strong>, campaigns and event tracking. Worked on payments, UX UI analysis and feedback loops to move from MVP to a scalable product.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">B2C</span><span class="chip">Ecommerce</span><span class="chip">Product Owner</span><span class="chip">Mobile App Marketing</span><span class="chip">CRM</span><span class="chip">ASO</span><span class="chip">UX UI</span><span class="chip">Data Analytics</span><span class="chip">A/B Testing</span><span class="chip">Agile</span>
             </div>
-            <p class="muted" data-i18n="exp.2.meta">Bodeboca app. ecommerce for wine and spirits. 20 percent of sales via app.</p>
-            <ul>
-              <li data-i18n="exp.2.li1">App relaunch due to tech debt. Competitive benchmark. trends. user analytics.</li>
-              <li data-i18n="exp.2.li2">Product vision and roadmap based on data and business. Coordination with sales. marketing. dev and design.</li>
-              <li data-i18n="exp.2.li3">Backlog and sprint planning. close work on UX UI. Tracking plan. funnels and events.</li>
-              <li data-i18n="exp.2.li4">Post launch optimization. KPIs and events with Appsflyer. UX UI A B tests. QA. user acquisition with Google UAC and Apple Search Ads. CRM with push. ASO.</li>
-              <li data-i18n="exp.2.li5">Tools. JIRA. GA4. Data Studio. Figma. SQL. Python. Firebase. Appsflyer. Batch. Splio.</li>
-            </ul>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.3.title">Mobile Marketing and Product Owner · Cerebriti</h3>
-              <span class="badge" data-i18n="exp.3.badge">May 2020 – Dec 2021 · Barcelona</span>
+          <div class="exp-item card">
+            <div class="head"><img src="academons.png" alt="Academons" class="logo"><h3 data-i18n="exp_academons_h">Academons · Mobile Marketing and Growth <span class="badge">May 2020 – Dec 2021 · Barcelona</span></h3></div>
+            <p data-i18n="exp_academons_1">Small <strong>EdTech SaaS</strong> startup after COVID. Goal was to improve <strong>retention</strong> for a homeschooling app. I boosted <strong>engagement</strong> and <strong>frequency of use</strong> with rewards calendars, gamification and personalized messages 👩‍🏫. I also ran low budget acquisition in Meta Ads, Google Ads and Apple Search Ads, tested Telegram as a growth channel, worked with influencers, created social content, and improved onboarding and <strong>CRM flows</strong>.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">SaaS</span><span class="chip">B2C</span><span class="chip">EdTech</span><span class="chip">Subscription</span><span class="chip">Acquisition</span><span class="chip">CRM</span><span class="chip">User Retention</span><span class="chip">Influencers</span><span class="chip">Growth</span>
             </div>
-            <p class="muted" data-i18n="exp.3.meta">EdTech subscription app for primary school. Goal. retention after COVID.</p>
-            <ul>
-              <li data-i18n="exp.3.li1">Acquisition in Meta Ads. Google Ads and Apple Search Ads. Alternative channels like Telegram.</li>
-              <li data-i18n="exp.3.li2">Influencer management and social content. Onboarding and CRM flows to lift conversion.</li>
-            </ul>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.4.title">Digital Marketing Manager · MAM Baby Spain</h3>
-              <span class="badge" data-i18n="exp.4.badge">Jun 2018 – May 2020 · Barcelona</span>
+          <div class="exp-item card">
+            <div class="head"><img src="mambaby.png" alt="MAM Baby" class="logo"><h3 data-i18n="exp_mam_h">MAM Baby Spain · Digital Marketing Manager <span class="badge">Jun 2018 – May 2020 · Barcelona</span></h3></div>
+            <p data-i18n="exp_mam_1">I was responsible for <strong>all digital marketing in Spain</strong> 👶. I adapted the corporate website and the <strong>MAM Brushy Time</strong> app to the Spanish market, and managed the CMS to keep content updated. A highlight was <strong>growing the social media community by more than 50% organically</strong> through useful parenting content and collaborations with maternity and healthcare influencers. I also managed Instagram and Facebook, produced newsletters, ran campaigns with partners such as <em>Mi Bebé y Yo</em>, supported launches with online ads and banners, and created post sale materials for pharmacy partners.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">FMCG</span><span class="chip">Healthcare</span><span class="chip">Social Media</span><span class="chip">Influencers</span><span class="chip">Email Marketing</span><span class="chip">Paid Media</span><span class="chip">CMS</span><span class="chip">Localization</span><span class="chip">Content Marketing</span>
             </div>
-            <ul>
-              <li data-i18n="exp.4.li1">Website and Brushy Time app localization for Spain. Work with in house CMS.</li>
-              <li data-i18n="exp.4.li2">Influencer marketing in maternity and health. Social. email and paid.</li>
-            </ul>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.5.title">Digital Marketing Manager · Kern Pharma</h3>
-              <span class="badge" data-i18n="exp.5.badge">Nov 2016 – May 2018 · Terrassa</span>
+          <div class="exp-item card">
+            <div class="head"><img src="kernpharma.jpg" alt="Kern Pharma" class="logo"><h3 data-i18n="exp_kern_h">Kern Pharma · Digital Marketing Manager <span class="badge">Nov 2016 – May 2018 · Terrassa</span></h3></div>
+            <p data-i18n="exp_kern_1">I was part of the Communications department and managed all <strong>digital communication</strong> for three companies 💊. I defined and executed the content strategy for web and blog with <strong>copywriting</strong>, <strong>SEO</strong> and product positioning, coordinated <strong>15+ stakeholders</strong>, and ranked <strong>“ibuprofeno” on Google page one</strong> for months. As Project Manager I led the migration of <strong>four corporate websites</strong> to Liferay with stakeholder management, content migration, SEO for multiple countries, backlog management and QA. We launched on time and on budget with a unified presence and product catalog. This role positioned me as a bridge between communication, marketing and IT, with a focus on KPIs and performance.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">Healthcare</span><span class="chip">Pharma Marketing</span><span class="chip">B2C</span><span class="chip">SEO</span><span class="chip">Content Marketing</span><span class="chip">Copywriting</span><span class="chip">Stakeholder Management</span><span class="chip">Analytics</span><span class="chip">Digital Strategy</span>
             </div>
-            <ul>
-              <li data-i18n="exp.5.li1">Content strategy for website and blog. copywriting. SEO and product positioning.</li>
-              <li data-i18n="exp.5.li2">Coordination of more than 15 stakeholders. work with QA and development.</li>
-              <li data-i18n="exp.5.li3">KPIs and data driven optimization. Result. first page ranking for the keyword “ibuprofeno”.</li>
-            </ul>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.6.title">Digital Marketing Manager · Brico Depôt Spain and Portugal</h3>
-              <span class="badge" data-i18n="exp.6.badge">Apr 2015 – Oct 2016 · Barcelona</span>
+          <div class="exp-item card">
+            <div class="head"><img src="bricodepot.png" alt="Brico Depot" class="logo"><h3 data-i18n="exp_brico_h">Brico Depôt Spain &amp; Portugal · Digital Marketing Manager <span class="badge">Apr 2015 – Oct 2016 · Barcelona</span></h3></div>
+            <p data-i18n="exp_brico_1">I led the company’s first steps into digital 🛠️. The goal was a new website with a <strong>catalogue of 35,000+ SKUs</strong> across <strong>28 stores</strong>. I defined <strong>product strategy and roadmap</strong>, managed the <strong>API</strong> for mass product uploads and aligned stakeholders inside the <strong>Kingfisher Group</strong>. I designed the first digital strategy with content, email, banners and performance campaigns, managed a <strong>€200K annual budget</strong>, launched the first monthly online catalog with <strong>dynamic pricing per store</strong>, and implemented KPIs. This became the base for future ecommerce and omnichannel growth.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">Retail</span><span class="chip">B2C</span><span class="chip">Ecommerce</span><span class="chip">Digital Strategy</span><span class="chip">Email Marketing</span><span class="chip">Catalog Management</span><span class="chip">KPIs</span><span class="chip">Performance Marketing</span>
             </div>
-            <ul>
-              <li data-i18n="exp.6.li1">New website launch with 35.000 SKUs. Digital strategy and online catalog for 28 stores.</li>
-              <li data-i18n="exp.6.li2">Email marketing. banners and performance measurement with KPIs.</li>
-            </ul>
           </div>
 
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.7.title">Social Media Manager · Tinkle</h3>
-              <span class="badge" data-i18n="exp.7.badge">Jul 2013 – Mar 2015 · Barcelona</span>
+          <div class="exp-item card">
+            <div class="head"><img src="tinkle.png" alt="Agencies" class="logo"><h3 data-i18n="exp_agencies_h">Agencies (Tinkle &amp; Territorio creativo) · Social Media and Digital Strategy <span class="badge">Jul 2013 – Mar 2015 · Barcelona</span></h3></div>
+            <p data-i18n="exp_agencies_1">I worked in agencies where I grew from community management to analytics and finally to strategy 📢. I launched the social channels of <strong>DIA España</strong> with customer care flows. I launched <strong>Gas Natural Fenosa</strong> channels, integrating customer care with a strict <strong>30 min SLA</strong>, and managed a <strong>5 person team</strong>. I also worked on social listening and brand reputation with <strong>Augure</strong>, managed content production, ran digital PR and collaborated with influencers. Clients included Novartis, Danone, Nestlé Bebé, Veet, Pastas Gallo, Font Vella, La Sirena, granini, Servihabitat and tommee tippee.</p>
+            <div class="muted" style="margin-top:8px" data-i18n="keywords">Keywords</div>
+            <div>
+              <span class="chip">Agency</span><span class="chip">FMCG</span><span class="chip">B2C</span><span class="chip">Digital PR</span><span class="chip">Influencers</span><span class="chip">Community Management</span><span class="chip">Team Leadership</span>
             </div>
-            <ul>
-              <li data-i18n="exp.7.li1">Social strategies. team of 5. Customer care on Twitter.</li>
-              <li data-i18n="exp.7.li2">Digital PR with bloggers and influencers. Clients. Gas Natural Fenosa. Veet. Novartis. Nestlé Bebé. Gut Microbiota Worldwatch. Servihabitat. Font Vella. La Sirena. Pastas Gallo. granini. tommee tippee.</li>
-            </ul>
-          </div>
-
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.8.title">Lecturer · Kschool</h3>
-              <span class="badge" data-i18n="exp.8.badge">Feb 2015</span>
-            </div>
-            <p class="muted" data-i18n="exp.8.meta">Web analytics master. Session on social media analytics.</p>
-          </div>
-
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.9.title">Community Manager · Territorio creativo</h3>
-              <span class="badge" data-i18n="exp.9.badge">Nov 2011 – Jun 2013</span>
-            </div>
-            <p class="muted" data-i18n="exp.9.meta">Social media. reputation and reporting. Clients. DIA España. Bankinter. Red.es.</p>
-          </div>
-
-          <div class="exp-item">
-            <div class="exp-header">
-              <h3 data-i18n="exp.10.title">Marketing Assistant · Europastry</h3>
-              <span class="badge" data-i18n="exp.10.badge">Jan 2011 – Jun 2011</span>
-            </div>
-            <p class="muted" data-i18n="exp.10.meta">Promotional campaigns. partnership with Escola d’Hostaleria de Barcelona. clipping. studies and benchmarks.</p>
           </div>
         </div>
       </section>
+      <div class="cta-standalone"><a class="btn" href="mailto:zoespinosa@gmail.com" data-i18n="cta_email">Email me</a></div>
 
-      <section id="skills" aria-labelledby="skills-h">
-        <h2 id="skills-h" data-i18n="section.skills">Skills</h2>
-        <div class="tags" style="margin-bottom:10px">
-          <span class="tag" data-i18n="skills.cat1">Paid social ads</span>
-          <span class="tag" data-i18n="skills.cat2">Web apps</span>
-          <span class="tag" data-i18n="skills.cat3">Mobile apps</span>
-        </div>
-        <div class="tags">
-          <span class="tag" data-i18n="skills.s1">Product Marketing</span>
-          <span class="tag" data-i18n="skills.s2">Growth</span>
-          <span class="tag" data-i18n="skills.s3">ASO</span>
-          <span class="tag" data-i18n="skills.s4">App Marketing</span>
-          <span class="tag" data-i18n="skills.s5">Analytics</span>
-          <span class="tag" data-i18n="skills.s6">SQL</span>
-          <span class="tag" data-i18n="skills.s7">Python</span>
-          <span class="tag" data-i18n="skills.s8">GA4</span>
-          <span class="tag" data-i18n="skills.s9">Firebase</span>
-          <span class="tag" data-i18n="skills.s10">Appsflyer</span>
-          <span class="tag" data-i18n="skills.s11">Jira</span>
-          <span class="tag" data-i18n="skills.s12">Figma</span>
+      <!-- Skills -->
+      <section id="skills" class="card">
+        <h2 data-i18n="skills_title">Relevant skills</h2>
+        <div>
+          <span class="chip">Product Marketing</span><span class="chip">Go to market</span><span class="chip">Positioning</span><span class="chip">Messaging</span><span class="chip">Growth</span><span class="chip">SEO</span><span class="chip">Content Strategy</span><span class="chip">Copywriting</span><span class="chip">CRM</span><span class="chip">Email Marketing</span><span class="chip">Paid Social</span><span class="chip">ASO</span><span class="chip">Analytics</span><span class="chip">GA4</span><span class="chip">Appsflyer</span><span class="chip">Firebase</span><span class="chip">SQL</span><span class="chip">Python</span><span class="chip">Figma</span><span class="chip">JIRA</span>
         </div>
       </section>
 
-      <section id="education" aria-labelledby="education-h">
-        <h2 id="education-h" data-i18n="section.education">Education</h2>
-        <ul>
-          <li data-i18n="edu.1"><strong>ESIC Business and Marketing School</strong> · Postgraduate in Digital Marketing and Advertising · 2014 – 2015</li>
-          <li data-i18n="edu.2"><strong>Foxize School</strong> · Digital Analytics workshop · 2014</li>
-          <li data-i18n="edu.3"><strong>Centro de Estudios Financieros</strong> · e Marketing course · 2011 – 2012</li>
-          <li data-i18n="edu.4"><strong>Universidad Complutense de Madrid</strong> · Advertising and PR</li>
-          <li data-i18n="edu.5"><strong>Universitat Autònoma de Barcelona</strong> · Advertising and Marketing · 2011</li>
-        </ul>
+      <!-- Final line -->
+      <section id="final" class="card">
+        <h2 class="muted" data-i18n="final_line">Let’s build clear marketing that moves metrics. I am ready when you are ✨</h2>
       </section>
 
-      <section id="extras" aria-labelledby="extras-h">
-        <h2 id="extras-h" data-i18n="section.extras">Publications. languages and honors</h2>
-        <p><strong data-i18n="extras.pub">Publications</strong></p>
-        <ul>
-          <li data-i18n="pub.1">Does the community manager have the days counted</li>
-          <li data-i18n="pub.2">10 tips to run a good Facebook giveaway</li>
-          <li data-i18n="pub.3">If you went offline this summer. here is how to catch up</li>
-          <li data-i18n="pub.4">Do not only educate or entertain. do both. Edutainment</li>
-          <li data-i18n="pub.5">The Walking Dead returns. fans 360 degrees</li>
-        </ul>
-        <div class="divider"></div>
-        <p><strong data-i18n="extras.certs">Certifications</strong></p>
-        <ul>
-          <li data-i18n="cert.1">e Marketing course</li>
-          <li data-i18n="cert.2">Social Media Marketing</li>
-        </ul>
-        <div class="divider"></div>
-        <p><strong data-i18n="extras.langs">Languages</strong></p>
-        <ul>
-          <li data-i18n="lang.1">English · Full professional</li>
-          <li data-i18n="lang.2">Spanish · Professional working</li>
-        </ul>
-        <div class="divider"></div>
-        <p><strong data-i18n="extras.honors">Honors</strong></p>
-        <ul>
-          <li data-i18n="honor.1">Séneca Scholarship</li>
-        </ul>
-      </section>
-
-      <footer>
-        <span data-i18n="footer.text">© <span id="year"></span> Zoe Espinosa · Built with HTML.</span>
-      </footer>
+      <footer>© <span id="year"></span> Zoe Espinosa · Built with HTML and a lot of care.</footer>
     </main>
   </div>
 
   <script>
-    const i18n = {
-      en: {
-        "label.language": "Language",
-        "nav.about": "Summary",
-        "nav.experience": "Experience",
-        "nav.skills": "Skills",
-        "nav.education": "Education",
-        "nav.extras": "Publications and more",
-        "section.about": "Summary",
-        "section.experience": "Experience",
-        "section.skills": "Skills",
-        "section.education": "Education",
-        "section.extras": "Publications. languages and honors",
-        "hero.role": "Digital Marketing · Content Manager · Product Owner",
-        "hero.location": "Castelldefels. Catalonia. Spain",
-        "about.text": "I launch products. I write clear content that ranks. I build landing pages that convert. I improve CRM flows. I test campaigns until we learn and get results. I work where product. marketing and growth meet. My focus is clarity. data. and business impact.",
+    // year
+    document.getElementById('year').textContent=new Date().getFullYear();
 
-        "exp.1.title": "Digital Consultant · B2B SaaS and consumer brands",
-        "exp.1.badge": "Jul 2023 – present · Barcelona",
-        "exp.1.meta": "Selected clients",
-        "exp.1.li1": "<strong>Prismic.io</strong> · ABM content. whitepapers. landings and newsletters. Alignment with Product Marketing. Partnerships and Design. Focus on acquisition for marketing decision makers.",
-        "exp.1.li2": "<strong>Proquinat</strong> · Digital rebrand. new website. identity and sales assets. SEO content and automated HubSpot lead reports. Funnel optimization.",
-        "exp.1.li3": "<strong>Animal oral health brand</strong> · Content strategy for product launches. SEO and organic social to drive awareness and education.",
-        "exp.1.li4": "<strong>Physiotherapy and lactation</strong> · Brand building. SEO content. local acquisition campaigns. More bookings via Instagram. Facebook and WordPress.",
-        "exp.1.tag1": "Content Strategy",
-        "exp.1.tag2": "Copywriting",
-        "exp.1.tag3": "SEO",
-        "exp.1.tag4": "Email Marketing",
-        "exp.1.tag5": "CRM",
-        "exp.1.tag6": "GTM Campaigns",
-        "exp.1.tag7": "WordPress",
-        "exp.1.tag8": "Branding",
-        "exp.1.tag9": "Landing Page Optimization",
-        "exp.1.tag10": "UX UI",
-        "exp.1.tag11": "HubSpot",
-        "exp.1.tag12": "Google Analytics",
-        "exp.1.tag13": "Digital Growth",
-        "exp.1.tag14": "SaaS",
-
-        "exp.2.title": "Mobile Marketing and Product Owner · Drinks&Co Store",
-        "exp.2.badge": "Dec 2021 – Jun 2023 · Barcelona",
-        "exp.2.meta": "Bodeboca app. ecommerce for wine and spirits. 20 percent of sales via app.",
-        "exp.2.li1": "App relaunch due to tech debt. Competitive benchmark. trends. user analytics.",
-        "exp.2.li2": "Product vision and roadmap based on data and business. Coordination with sales. marketing. dev and design.",
-        "exp.2.li3": "Backlog and sprint planning. close work on UX UI. Tracking plan. funnels and events.",
-        "exp.2.li4": "Post launch optimization. KPIs and events with Appsflyer. UX UI A B tests. QA. user acquisition with Google UAC and Apple Search Ads. CRM with push. ASO.",
-        "exp.2.li5": "Tools. JIRA. GA4. Data Studio. Figma. SQL. Python. Firebase. Appsflyer. Batch. Splio.",
-
-        "exp.3.title": "Mobile Marketing and Product Owner · Cerebriti",
-        "exp.3.badge": "May 2020 – Dec 2021 · Barcelona",
-        "exp.3.meta": "EdTech subscription app for primary school. Goal. retention after COVID.",
-        "exp.3.li1": "Acquisition in Meta Ads. Google Ads and Apple Search Ads. Alternative channels like Telegram.",
-        "exp.3.li2": "Influencer management and social content. Onboarding and CRM flows to lift conversion.",
-
-        "exp.4.title": "Digital Marketing Manager · MAM Baby Spain",
-        "exp.4.badge": "Jun 2018 – May 2020 · Barcelona",
-        "exp.4.li1": "Website and Brushy Time app localization for Spain. Work with in house CMS.",
-        "exp.4.li2": "Influencer marketing in maternity and health. Social. email and paid.",
-
-        "exp.5.title": "Digital Marketing Manager · Kern Pharma",
-        "exp.5.badge": "Nov 2016 – May 2018 · Terrassa",
-        "exp.5.li1": "Content strategy for website and blog. copywriting. SEO and product positioning.",
-        "exp.5.li2": "Coordination of more than 15 stakeholders. work with QA and development.",
-        "exp.5.li3": "KPIs and data driven optimization. Result. first page ranking for the keyword \"ibuprofeno\".",
-
-        "exp.6.title": "Digital Marketing Manager · Brico Depôt Spain and Portugal",
-        "exp.6.badge": "Apr 2015 – Oct 2016 · Barcelona",
-        "exp.6.li1": "New website launch with 35.000 SKUs. Digital strategy and online catalog for 28 stores.",
-        "exp.6.li2": "Email marketing. banners and performance measurement with KPIs.",
-
-        "exp.7.title": "Social Media Manager · Tinkle",
-        "exp.7.badge": "Jul 2013 – Mar 2015 · Barcelona",
-        "exp.7.li1": "Social strategies. team of 5. Customer care on Twitter.",
-        "exp.7.li2": "Digital PR with bloggers and influencers. Clients. Gas Natural Fenosa. Veet. Novartis. Nestlé Bebé. Gut Microbiota Worldwatch. Servihabitat. Font Vella. La Sirena. Pastas Gallo. granini. tommee tippee.",
-
-        "exp.8.title": "Lecturer · Kschool",
-        "exp.8.badge": "Feb 2015",
-        "exp.8.meta": "Web analytics master. Session on social media analytics.",
-
-        "exp.9.title": "Community Manager · Territorio creativo",
-        "exp.9.badge": "Nov 2011 – Jun 2013",
-        "exp.9.meta": "Social media. reputation and reporting. Clients. DIA España. Bankinter. Red.es.",
-
-        "exp.10.title": "Marketing Assistant · Europastry",
-        "exp.10.badge": "Jan 2011 – Jun 2011",
-        "exp.10.meta": "Promotional campaigns. partnership with Escola d’Hostaleria de Barcelona. clipping. studies and benchmarks.",
-
-        "skills.cat1": "Paid social ads",
-        "skills.cat2": "Web apps",
-        "skills.cat3": "Mobile apps",
-        "skills.s1": "Product Marketing",
-        "skills.s2": "Growth",
-        "skills.s3": "ASO",
-        "skills.s4": "App Marketing",
-        "skills.s5": "Analytics",
-        "skills.s6": "SQL",
-        "skills.s7": "Python",
-        "skills.s8": "GA4",
-        "skills.s9": "Firebase",
-        "skills.s10": "Appsflyer",
-        "skills.s11": "Jira",
-        "skills.s12": "Figma",
-
-        "edu.1": "<strong>ESIC Business and Marketing School</strong> · Postgraduate in Digital Marketing and Advertising · 2014 – 2015",
-        "edu.2": "<strong>Foxize School</strong> · Digital Analytics workshop · 2014",
-        "edu.3": "<strong>Centro de Estudios Financieros</strong> · e Marketing course · 2011 – 2012",
-        "edu.4": "<strong>Universidad Complutense de Madrid</strong> · Advertising and PR",
-        "edu.5": "<strong>Universitat Autònoma de Barcelona</strong> · Advertising and Marketing · 2011",
-
-        "extras.pub": "Publications",
-        "pub.1": "Does the community manager have the days counted",
-        "pub.2": "10 tips to run a good Facebook giveaway",
-        "pub.3": "If you went offline this summer. here is how to catch up",
-        "pub.4": "Do not only educate or entertain. do both. Edutainment",
-        "pub.5": "The Walking Dead returns. fans 360 degrees",
-
-        "extras.certs": "Certifications",
-        "cert.1": "e Marketing course",
-        "cert.2": "Social Media Marketing",
-
-        "extras.langs": "Languages",
-        "lang.1": "English · Full professional",
-        "lang.2": "Spanish · Professional working",
-
-        "extras.honors": "Honors",
-        "honor.1": "Séneca Scholarship",
-
-        "footer.text": "© <span id=\"year\"></span> Zoe Espinosa · Built with HTML."
-      },
+    // i18n
+    const dict = {
       es: {
-        "label.language": "Idioma",
-        "nav.about": "Resumen",
-        "nav.experience": "Experiencia",
-        "nav.skills": "Skills",
-        "nav.education": "Educación",
-        "nav.extras": "Publicaciones y más",
-        "section.about": "Resumen",
-        "section.experience": "Experiencia",
-        "section.skills": "Skills",
-        "section.education": "Educación",
-        "section.extras": "Publicaciones. idiomas y reconocimientos",
-        "hero.role": "Digital Marketing · Content Manager · Product Owner",
-        "hero.location": "Castelldefels. Cataluña. España",
-        "about.text": "Lanzo productos. Escribo contenido claro que posiciona. Construyo landing pages que convierten. Mejoro flujos de CRM. Testo campañas hasta que aprendemos y logramos resultados. Trabajo donde se juntan producto. marketing y growth. Mi foco es claridad. datos e impacto en negocio.",
-
-        "exp.1.title": "Consultora Digital · B2B SaaS y marcas de consumo",
-        "exp.1.badge": "jul 2023 – actual · Barcelona",
-        "exp.1.meta": "Clientes seleccionados",
-        "exp.1.li1": "<strong>Prismic.io</strong> · Contenido ABM. whitepapers. landings y newsletters. Alineación con Product Marketing. Partnerships y Diseño. Foco en adquisición para decisores de marketing.",
-        "exp.1.li2": "<strong>Proquinat</strong> · Rebranding digital. nueva web. identidad y materiales de ventas. Contenido SEO y reportes automáticos de leads en HubSpot. Optimización de funnel.",
-        "exp.1.li3": "<strong>Marca de salud oral animal</strong> · Estrategia de contenidos para lanzamientos. SEO y social orgánico para notoriedad y educación.",
-        "exp.1.li4": "<strong>Fisioterapia y lactancia</strong> · Construcción de marca. contenido SEO. campañas locales de adquisición. Más reservas vía Instagram. Facebook y WordPress.",
-        "exp.1.tag1": "Content Strategy",
-        "exp.1.tag2": "Copywriting",
-        "exp.1.tag3": "SEO",
-        "exp.1.tag4": "Email Marketing",
-        "exp.1.tag5": "CRM",
-        "exp.1.tag6": "GTM Campaigns",
-        "exp.1.tag7": "WordPress",
-        "exp.1.tag8": "Branding",
-        "exp.1.tag9": "Landing Page Optimization",
-        "exp.1.tag10": "UX UI",
-        "exp.1.tag11": "HubSpot",
-        "exp.1.tag12": "Google Analytics",
-        "exp.1.tag13": "Digital Growth",
-        "exp.1.tag14": "SaaS",
-
-        "exp.2.title": "Mobile Marketing y Product Owner · Drinks&Co Store",
-        "exp.2.badge": "dic 2021 – jun 2023 · Barcelona",
-        "exp.2.meta": "App Bodeboca. ecommerce de vinos y destilados. 20 por ciento de ventas via app.",
-        "exp.2.li1": "Relanzamiento de app por deuda técnica. benchmark competitivo. tendencias. analítica de usuarios.",
-        "exp.2.li2": "Visión y roadmap de producto basados en datos y negocio. Coordinación con ventas. marketing. dev y diseño.",
-        "exp.2.li3": "Gestión de backlog y sprints. trabajo cercano en UX UI. Plan de tracking. embudos y eventos.",
-        "exp.2.li4": "Optimización post lanzamiento. KPIs y eventos con Appsflyer. tests A B de UX UI. QA. captación con Google UAC y Apple Search Ads. CRM con push. ASO.",
-        "exp.2.li5": "Herramientas. JIRA. GA4. Data Studio. Figma. SQL. Python. Firebase. Appsflyer. Batch. Splio.",
-
-        "exp.3.title": "Mobile Marketing y Product Owner · Cerebriti",
-        "exp.3.badge": "may 2020 – dic 2021 · Barcelona",
-        "exp.3.meta": "App EdTech por suscripción para primaria. Objetivo. retención post COVID.",
-        "exp.3.li1": "Adquisición en Meta Ads. Google Ads y Apple Search Ads. Canales alternativos como Telegram.",
-        "exp.3.li2": "Gestión de influencers y contenido social. Onboarding y flujos de CRM para mejorar conversión.",
-
-        "exp.4.title": "Digital Marketing Manager · MAM Baby España",
-        "exp.4.badge": "jun 2018 – may 2020 · Barcelona",
-        "exp.4.li1": "Localización de web y app Brushy Time para España. Trabajo con CMS propio.",
-        "exp.4.li2": "Influencer marketing en maternidad y salud. Social. email y paid.",
-
-        "exp.5.title": "Digital Marketing Manager · Kern Pharma",
-        "exp.5.badge": "nov 2016 – may 2018 · Terrassa",
-        "exp.5.li1": "Estrategia de contenidos para web y blog. copywriting. SEO y posicionamiento de producto.",
-        "exp.5.li2": "Coordinación de más de 15 stakeholders. trabajo con QA y desarrollo.",
-        "exp.5.li3": "KPIs y optimización basada en datos. Resultado. primera página para la palabra \"ibuprofeno\".",
-
-        "exp.6.title": "Digital Marketing Manager · Brico Depôt España y Portugal",
-        "exp.6.badge": "abr 2015 – oct 2016 · Barcelona",
-        "exp.6.li1": "Lanzamiento de nueva web con 35.000 SKUs. Estrategia digital y catálogo online para 28 tiendas.",
-        "exp.6.li2": "Email marketing. banners y medición con KPIs.",
-
-        "exp.7.title": "Social Media Manager · Tinkle",
-        "exp.7.badge": "jul 2013 – mar 2015 · Barcelona",
-        "exp.7.li1": "Estrategias de social. equipo de 5. Atención al cliente en Twitter.",
-        "exp.7.li2": "PR digital con bloggers e influencers. Clientes. Gas Natural Fenosa. Veet. Novartis. Nestlé Bebé. Gut Microbiota Worldwatch. Servihabitat. Font Vella. La Sirena. Pastas Gallo. granini. tommee tippee.",
-
-        "exp.8.title": "Docente · Kschool",
-        "exp.8.badge": "feb 2015",
-        "exp.8.meta": "Máster de Analítica web. Sesión sobre análisis en social media.",
-
-        "exp.9.title": "Community Manager · Territorio creativo",
-        "exp.9.badge": "nov 2011 – jun 2013",
-        "exp.9.meta": "Redes. reputación y reporting. Clientes. DIA España. Bankinter. Red.es.",
-
-        "exp.10.title": "Marketing Assistant · Europastry",
-        "exp.10.badge": "ene 2011 – jun 2011",
-        "exp.10.meta": "Campañas promocionales. colaboración con Escola d’Hostaleria de Barcelona. clipping. estudios y benchmarks.",
-
-        "skills.cat1": "Anuncios de pago en redes",
-        "skills.cat2": "Aplicaciones web",
-        "skills.cat3": "Aplicaciones móviles",
-        "skills.s1": "Product Marketing",
-        "skills.s2": "Growth",
-        "skills.s3": "ASO",
-        "skills.s4": "App Marketing",
-        "skills.s5": "Analytics",
-        "skills.s6": "SQL",
-        "skills.s7": "Python",
-        "skills.s8": "GA4",
-        "skills.s9": "Firebase",
-        "skills.s10": "Appsflyer",
-        "skills.s11": "Jira",
-        "skills.s12": "Figma",
-
-        "edu.1": "<strong>ESIC Business and Marketing School</strong> · Postgrado en Marketing y Publicidad Digital · 2014 – 2015",
-        "edu.2": "<strong>Foxize School</strong> · Workshop de Analítica Digital · 2014",
-        "edu.3": "<strong>Centro de Estudios Financieros</strong> · Curso e Marketing · 2011 – 2012",
-        "edu.4": "<strong>Universidad Complutense de Madrid</strong> · Publicidad y RRPP",
-        "edu.5": "<strong>Universitat Autònoma de Barcelona</strong> · Publicitat y Marketing · 2011",
-
-        "extras.pub": "Publicaciones",
-        "pub.1": "¿Tiene el community manager los días contados",
-        "pub.2": "10 consejos para hacer un buen concurso en Facebook",
-        "pub.3": "Si has desconectado este verano. vuelve a ponerte al día",
-        "pub.4": "No me eduques ni me entretengas. haz ambas a la vez. Edutainment",
-        "pub.5": "Vuelve The Walking Dead. fans 360 grados",
-
-        "extras.certs": "Certificaciones",
-        "cert.1": "Curso e Marketing",
-        "cert.2": "Social Media Marketing",
-
-        "extras.langs": "Idiomas",
-        "lang.1": "English · Full professional",
-        "lang.2": "Castellano · Professional working",
-
-        "extras.honors": "Honores",
-        "honor.1": "Beca Séneca",
-
-        "footer.text": "© <span id=\"year\"></span> Zoe Espinosa · Hecho con HTML."
+        name: 'Zoe Espinosa',
+        role: 'Marketing Digital · Content Manager · Product Owner',
+        loc: 'Castelldefels, Cataluña, España',
+        nav_summary: 'Resumen',
+        nav_bring: 'Lo que aporto',
+        nav_proud: 'Things I’m proud of',
+        nav_exp: 'Experiencia',
+        nav_skills: 'Habilidades',
+        summary_title: 'Resumen',
+        summary_text: 'Hola, soy Zoe 👋 Hago que el marketing funcione: lanzando productos, escribiendo contenido que se encuentra, creando landings que convierten, haciendo crecer apps, arreglando CRMs y probando campañas hasta que dan resultado. He trabajado en grandes empresas y startups, en SaaS, ecommerce, pharma, gran consumo y EdTech. ¿Qué tenían todas en común? La necesidad de unir estrategia, contenido y ejecución para conseguir resultados 💡.',
+        bring_title: 'Lo que aporto',
+        bring_1: '<strong>Problem solver</strong>: convierto problemas complejos en soluciones claras y accionables.',
+        bring_2: '<strong>Perfil 360°</strong>: estrategia, analítica y contenido. Conecto los puntos en todo el funnel.',
+        bring_3: '<strong>Aprendizaje rápido y adaptación</strong>: me ajusto a nuevos sectores, herramientas y formas de trabajo.',
+        bring_4: '<strong>Actitud positiva</strong>: colaborativa, proactiva y hands-on cuando hay que entregar.',
+        bring_5: '<strong>Colaboración cross‑functional</strong>: producto, diseño, ventas y tecnología juntos.',
+        bring_6: '<strong>Mentalidad de growth</strong>: probar, aprender, iterar y mejorar 🚀.',
+        cta_email: 'Escríbeme',
+        cta_linkedin: 'LinkedIn',
+        proud_title: 'Things I’m proud of',
+        proud_1_t: 'Relanzar una app que aporta el 21% de ventas sin perder datos 📱',
+        proud_1_d: 'En <strong>Bodeboca</strong> la app era clave. Tuvimos que relanzarla con nueva tecnología sin perder tracking, campañas ni usuarios. Hice benchmark, mapeé flujos y aprendí <strong>Figma</strong> para rediseñar la UX. Resultado: app más fluida, datos estables y sin caída de rendimiento. Un reto real de <strong>Product Owner</strong>.',
+        proud_2_t: 'Lanzar cuatro webs casi a la vez 🌍',
+        proud_2_d: 'En <strong>Kern Pharma</strong> lideré la migración de <strong>Indukern</strong>, <strong>Kern Pharma</strong>, <strong>Calier</strong> y <strong>Grupo Indukern</strong> a una sola plataforma. Stakeholders, SEO multi‑país, migración de contenidos, QA y control estricto de plazos y presupuesto. Lanzamos <strong>en tiempo</strong> y <strong>en presupuesto</strong> con una presencia unificada. Mucha <strong>gestión de proyectos</strong> y visión de product marketing.',
+        proud_3_t: 'Posicionar “ibuprofeno” en la primera página de Google 🔎',
+        proud_3_d: 'En pharma, el SEO también es reputación. Diseñé la estrategia de web y blog con keyword research, redacción SEO, backlinks y optimización on page. Resultado: <strong>“ibuprofeno” en página uno</strong> durante meses. Contenido y SEO como palancas reales de producto.',
+        proud_4_t: 'Cuando Excel no llega, aprende Python 🐍',
+        proud_4_d: 'En <strong>Víntegris</strong> Excel no podía con la base de datos. Aprendí <strong>Python</strong> para limpiar y automatizar procesos de CRM y usé <strong>Looker</strong> y <strong>Data Studio</strong> para compartir insights con el equipo. Herramientas mejores para un marketing más inteligente.',
+        exp_title: 'Experiencia profesional',
+        exp_freelance_h: 'Consultora Digital · B2B SaaS y Marcas de Consumo <span class="badge">Jul 2023 – presente · Barcelona</span>',
+        exp_freelance_1: '<strong>Prismic.io</strong> · Creación de <strong>contenido ABM</strong> (whitepapers, landings y newsletters). Trabajo con Product Marketing, Partnerships y Diseño para definir <strong>positioning y messaging</strong> para decisores de marketing 🎯.',
+        exp_freelance_2: '<strong>Víntegris</strong> · Saneé y escalé la base de datos de marketing en <strong>HubSpot</strong>. Limpieza y estructuración de leads, reports automáticos y dashboards para que ventas y marketing actuaran con datos 📊.',
+        exp_freelance_3: '<strong>Proquinat</strong> · Lideré el <strong>rebranding digital</strong> y la nueva web. Contenido <strong>SEO</strong>, automatización de informes en HubSpot y optimización del funnel para aumentar leads B2B cualificados 🏭.',
+        exp_freelance_4: '<strong>PlaqueOff</strong> · Diseño y despliegue de <strong>content strategy</strong> para lanzamientos. SEO y social orgánico para awareness y educación en salud oral de mascotas 🐶.',
+        keywords: 'Palabras clave',
+        exp_drinksco_h: 'Drinks&Co Store · Mobile Marketing y Product Owner <span class="badge">Dic 2021 – Jun 2023 · Barcelona</span>',
+        exp_drinksco_1: 'Trabajé con <strong>dos apps en paralelo</strong> 📱.',
+        exp_drinksco_2: '<strong>Bodeboca</strong> · Tras el relanzamiento, las ventas por app pasaron del <strong>18% al 21%</strong> del total. Lideré la migración, definí <strong>visión, roadmap y positioning</strong> con customer insights y coordiné ventas, marketing, diseño y desarrollo. El crecimiento vino de <strong>CRM con push</strong>, adquisición con <strong>Google UAC</strong> y <strong>Apple Search Ads</strong>, y mejor <strong>messaging y ASO</strong>. Tras el lanzamiento definí <strong>KPIs</strong>, medí funnels en Appsflyer, hice <strong>A/B tests</strong> de UX UI y lideré QA.',
+        exp_drinksco_3: '<strong>Drinks&Co</strong> · Apoyé el <strong>go to market</strong> en cinco países 🌍. Implementé <strong>flujos de CRM</strong>, campañas y event tracking. Trabajé en pagos, análisis UX UI y feedback loops para pasar de MVP a producto escalable.',
+        exp_academons_h: 'Academons · Mobile Marketing y Growth <span class="badge">May 2020 – Dic 2021 · Barcelona</span>',
+        exp_academons_1: 'Startup <strong>EdTech SaaS</strong> tras COVID. Objetivo: mejorar la <strong>retención</strong> en una app de homeschooling. Aumenté <strong>engagement</strong> y <strong>frecuencia de uso</strong> con rewards calendars, gamificación y mensajes personalizados 👩‍🏫. Hice adquisición con poco presupuesto en Meta Ads, Google Ads y Apple Search Ads, probé Telegram como canal de growth, trabajé con influencers, creé contenido social y mejoré onboarding y <strong>flujos de CRM</strong>.',
+        exp_mam_h: 'MAM Baby Spain · Digital Marketing Manager <span class="badge">Jun 2018 – May 2020 · Barcelona</span>',
+        exp_mam_1: 'Responsable de <strong>todo lo digital en España</strong> 👶. Adapté la web corporativa y la app <strong>MAM Brushy Time</strong> al mercado español y gestioné el CMS. Hito: <strong>+50% de comunidad</strong> de forma orgánica con contenido útil para padres y colaboración con influencers de maternidad y salud. Gestioné Instagram y Facebook, newsletters, campañas con <em>Mi Bebé y Yo</em>, apoyé lanzamientos con ads y banners y creé materiales de postventa para partners de farmacia.',
+        exp_kern_h: 'Kern Pharma · Digital Marketing Manager <span class="badge">Nov 2016 – May 2018 · Terrassa</span>',
+        exp_kern_1: 'Formé parte de Comunicación y llevé la <strong>comunicación digital</strong> de tres compañías 💊. Definí y ejecuté la estrategia de contenidos de web y blog con <strong>copywriting</strong>, <strong>SEO</strong> y product positioning, coordiné <strong>15+ stakeholders</strong> y posicioné <strong>“ibuprofeno” en la primera página de Google</strong> durante meses. Como Project Manager lideré la migración de <strong>cuatro webs</strong> a Liferay con gestión de stakeholders, migración de contenidos, SEO multi‑país, backlog y QA. Lanzamos en tiempo y presupuesto con una presencia unificada y catálogo de producto.',
+        exp_brico_h: 'Brico Depôt Spain & Portugal · Digital Marketing Manager <span class="badge">Abr 2015 – Oct 2016 · Barcelona</span>',
+        exp_brico_1: 'Lideré los <strong>primeros pasos digitales</strong> de un retailer offline 🛠️. Objetivo: nueva web con <strong>35.000+ SKUs</strong> en <strong>28 tiendas</strong>. Definí <strong>product strategy y roadmap</strong>, gestioné la <strong>API</strong> para altas masivas y alineé stakeholders dentro de <strong>Kingfisher</strong>. Diseñé la primera estrategia digital con contenido, email, banners y campañas de performance, gestioné un <strong>presupuesto anual de 200K€</strong>, lancé el primer catálogo online mensual con <strong>precio dinámico por tienda</strong> e implanté KPIs. Base para el futuro ecommerce y el crecimiento omnicanal.',
+        exp_agencies_h: 'Agencias (Tinkle & Territorio creativo) · Social Media y Estrategia Digital <span class="badge">Jul 2013 – Mar 2015 · Barcelona</span>',
+        exp_agencies_1: 'Trabajé en agencias donde crecí de community a analítica y luego a estrategia 📢. Lancé los canales de <strong>DIA España</strong> con flujos de atención al cliente. Lancé los de <strong>Gas Natural Fenosa</strong> integrando atención al cliente con un <strong>SLA de 30 min</strong> y gestioné un <strong>equipo de 5 personas</strong>. También hice social listening y reputación con <strong>Augure</strong>, gestión de contenidos, PR digital e influencers. Clientes: Novartis, Danone, Nestlé Bebé, Veet, Pastas Gallo, Font Vella, La Sirena, granini, Servihabitat y tommee tippee.',
+        skills_title: 'Habilidades relevantes',
+        final_line: 'Hagamos marketing claro que mueva métricas. Lista cuando tú digas ✨'
       }
     };
 
-    function applyI18n(lang) {
-      const dict = i18n[lang] || i18n.en;
-      document.documentElement.setAttribute("lang", lang);
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        const val = dict[key];
-        if (!val) return;
-        const isInput = ["INPUT","TEXTAREA"].includes(el.tagName);
-        if (isInput && el.hasAttribute("placeholder")) {
-          el.setAttribute("placeholder", val);
-        } else {
-          el.innerHTML = val;
-        }
+    function setLang(lang){
+      document.documentElement.lang = lang === 'es' ? 'es' : 'en';
+      const map = dict[lang];
+      if(!map) return;
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(map[key]) el.innerHTML = map[key];
       });
-      localStorage.setItem("lang", lang);
+      // toggle states
+      document.getElementById('btn-en').classList.toggle('active', lang==='en');
+      document.getElementById('btn-es').classList.toggle('active', lang==='es');
+      document.getElementById('btn-en').setAttribute('aria-pressed', lang==='en');
+      document.getElementById('btn-es').setAttribute('aria-pressed', lang==='es');
     }
 
-    (function initLang(){
-      const saved = localStorage.getItem("lang") || "en";
-      const select = document.getElementById("lang");
-      if (select){
-        select.value = saved;
-        select.addEventListener("change", e => applyI18n(e.target.value));
-      }
-      applyI18n(saved);
-      const y = document.getElementById("year");
-      if (y) y.textContent = new Date().getFullYear();
-    })();
-  </script>
+    // events
+    document.getElementById('btn-en').addEventListener('click',()=>setLang('en'));
+    document.getElementById('btn-es').addEventListener('click',()=>setLang('es'));
 
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Zoe Espinosa",
-    "jobTitle": "Digital Marketing. Content Manager. Product Owner",
-    "address": {"@type":"PostalAddress","addressLocality":"Castelldefels","addressRegion":"Catalonia","addressCountry":"ES"},
-    "email": "mailto:zoespinosa@gmail.com",
-    "telephone": "+34 606 436 972",
-    "url": "https://www.linkedin.com/in/zoespinosaz",
-    "sameAs": ["https://www.linkedin.com/in/zoespinosaz"]
-  }
+    // default EN
+    setLang('en');
   </script>
 
 
