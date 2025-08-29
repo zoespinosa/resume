@@ -17,8 +17,26 @@
     a{color:var(--primary);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    .layout{max-width:1200px;margin:0 auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px;height:100vh}
-    @media (max-width: 980px){.layout{grid-template-columns:1fr;height:auto}}
+.layout {
+  max-width:1200px;
+  margin:0 auto;
+  padding:28px;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:28px;
+}
+
+/* Mobile */
+@media (max-width: 980px) {
+  .layout {
+    display: block; /* apilar todo */
+  }
+  .sidebar {
+    position: static; /* que no sea sticky */
+    margin-bottom: 20px;
+  }
+}
+
     /* Sidebar y Main scrollables */
     .sidebar{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px;overflow:auto}
     .main{display:flex;flex-direction:column;gap:18px;overflow:auto}
