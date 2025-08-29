@@ -12,15 +12,18 @@
     :root{--primary:#fc649c;--text:#e6e7ea;--muted:#a9adba;--bg:#0f1115;--surface:#151922;--border:#2a2f3a;--chip:#1d2230}
     *{box-sizing:border-box}
     html,body{margin:0;height:100%}
-    body{font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0c0e13,var(--bg));color:var(--text);line-height:1.65;font-size:14px}
+    /* Dos columnas con scroll independiente */
+    body{height:100vh;overflow:hidden;font-family:Poppins,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0c0e13,var(--bg));color:var(--text);line-height:1.65;font-size:14px}
     a{color:var(--primary);text-decoration:none}
     a:hover{text-decoration:underline}
 
-    .layout{max-width:1200px;margin:0 auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px}
-    @media (max-width: 980px){.layout{grid-template-columns:1fr}}
+    .layout{max-width:1200px;margin:0 auto;padding:28px;display:grid;grid-template-columns:320px 1fr;gap:28px;height:100vh}
+    @media (max-width: 980px){.layout{grid-template-columns:1fr;height:auto}}
+    /* Sidebar y Main scrollables */
+    .sidebar{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px;overflow:auto}
+    .main{display:flex;flex-direction:column;gap:18px;overflow:auto}
 
     /* Sidebar */
-    .sidebar{position:sticky;top:24px;align-self:start;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:24px}
     .avatar{width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid var(--border);display:block;margin:0 auto}
     .name-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
     .name{font-size:24px;font-weight:800}
@@ -31,12 +34,15 @@
     .loc{color:var(--muted);font-size:14px;margin-top:4px}
     .contact-list{margin-top:16px;display:grid;gap:10px}
     .contact-item{display:flex;align-items:center;gap:10px;background:var(--chip);border:1px solid var(--border);padding:10px 12px;border-radius:12px}
+    .looking{margin-top:18px;background:#101521;border:1px solid var(--border);border-radius:14px;padding:12px}
+    .looking h4{margin:0 0 8px 0;font-size:14px;color:#fff}
+    .looking ul{margin:0;padding-left:18px}
+    .looking li{margin:4px 0;color:var(--muted)}
     .navlist{margin-top:18px;display:flex;flex-direction:column;gap:10px}
     .navlist a{font-size:14px;background:#101521;border:1px solid var(--border);padding:10px 12px;border-radius:12px;color:var(--muted)}
     .navlist a:hover{color:#fff;border-color:var(--primary)}
 
     /* Main */
-    .main{display:flex;flex-direction:column;gap:18px}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px}
     h2{margin:0 0 10px;font-size:22px}
     h3{margin:0 0 6px;font-size:18px;display:flex;align-items:center;gap:10px}
@@ -72,13 +78,26 @@
           <button id="btn-es" aria-pressed="false">ES</button>
         </div>
       </div>
-      <div class="role" data-i18n="role">Digital Marketing · Content Manager · Product Owner</div>
+      <div class="role" data-i18n="role">Digital Marketing · Content · Product</div>
       <div class="loc" data-i18n="loc">Castelldefels, Catalonia, Spain</div>
+
       <div class="contact-list">
         <a class="contact-item" href="tel:+34606436972">📱 606 436 972</a>
         <a class="contact-item" href="mailto:zoespinosa@gmail.com">✉️ zoespinosa@gmail.com</a>
         <a class="contact-item" target="_blank" href="https://www.linkedin.com/in/zoespinosaz/">🔗 linkedin.com/in/zoespinosaz</a>
       </div>
+
+      <!-- Looking for -->
+      <div class="looking">
+        <h4 data-i18n="lk_title">Looking for</h4>
+        <ul>
+          <li data-i18n="lk_1">Opportunities in Digital Marketing, Product or Content</li>
+          <li data-i18n="lk_2">Hybrid or remote</li>
+          <li data-i18n="lk_3">Barcelona or nearby areas</li>
+          <li data-i18n="lk_4">Full-time employment</li>
+        </ul>
+      </div>
+
       <nav class="navlist" aria-label="Sections">
         <a href="#summary" data-i18n="nav_summary">Summary</a>
         <a href="#bring" data-i18n="nav_bring">What I bring</a>
@@ -94,7 +113,7 @@
       <!-- Summary -->
       <section id="summary" class="card">
         <h2 data-i18n="summary_title">Summary</h2>
-        <p data-i18n="summary_text"><strong>Hi! I’m Zoe</strong> 👋 I make marketing work: launching products, writing content that shows up, building landing pages that convert, growing apps, fixing CRMs and testing campaigns until they deliver. I have worked in big companies and fast startups, in SaaS, ecommerce, pharma, FMCG and EdTech. What they all needed? Someone to bring strategy, content and execution together, and get things done 💡.</p>
+        <p data-i18n="summary_text"><strong>Hi! I’m Zoe</strong> 👋 I make things work: launching products, writing content that shows up, building landing pages that convert, growing apps, fixing CRMs and testing campaigns until they deliver. I have worked in big companies and fast startups, in SaaS, ecommerce, pharma, FMCG and EdTech. What they all needed? Someone to bring strategy, content and execution together, and get things done 💡.</p>
       </section>
 
       <!-- What I bring -->
@@ -137,7 +156,7 @@
 
       <!-- Experience -->
       <section id="experience" class="card">
-        <h2 data-i18n="exp_title">Professional experience</h2>
+        <h2 data-i18n="exp_title">Professional experienice</h2>
         <div class="exp">
 
           <div class="exp-item card">
@@ -269,8 +288,17 @@
   // Diccionario ES
   const dict = {
     es: {
-      role:'Marketing Digital · Content Manager · Product Owner',
+      role:'Marketing Digital · Content · Product',
       loc:'Castelldefels, Cataluña, España',
+
+      /* Sidebar "Looking for" */
+      lk_title:'Buscando',
+      lk_1:'Oportunidades en Marketing digital, Producto o Content',
+      lk_2:'Híbrido o remoto',
+      lk_3:'Barcelona o alrededores',
+      lk_4:'Cuenta ajena',
+
+      /* Nav */
       nav_summary:'Resumen',
       nav_bring:'¿Qué puedo aportar?',
       nav_proud:'Things I’m proud of',
@@ -278,9 +306,11 @@
       nav_skills:'Habilidades',
       nav_cur:'Curiosidades',
 
+      /* Summary */
       summary_title:'Resumen',
       summary_text:'¡Hola! Soy Zoe 👋 Llevo unos años trabajando entre marketing y producto, haciendo que las cosas funcionen: lanzo, itero y desarrollo productos digitales, escribo contenido que aporta a clientes y empresas, construyo landings que convierten (o al menos, aprendemos de ello), hago crecer apps, trabajo CRMs y test A/B de campañas hasta que dan resultado. He trabajado en grandes empresas y en startups, en SaaS, ecommerce, pharma, gran consumo y EdTech. ¿Qué tenían todas en común? Unir estrategia, ejecución, y la necesidad de alguien que sacase los proyectos adelante y los sintiese como suyos 💡.',
 
+      /* Bring */
       bring_title:'¿Qué puedo aportar?',
       bring_1:'<strong>Problem solver</strong> como modo de vida. Me gusta buscar soluciones claras y accionables a problemas de todo tipo.',
       bring_2:'<strong>Perfil 360°</strong>: estrategia, analítica y contenido. Conecto los puntos en todo el funnel.',
@@ -291,6 +321,7 @@
       cta_email:'¡Contáctame!',
       cta_linkedin:'LinkedIn',
 
+      /* Proud */
       proud_title:'Things I’m proud of',
       proud_1_t:'Relanzar una app que hacía el 21% de las ventas sin perder ni un usuario 📱',
       proud_1_d:'En Bodeboca la app era clave. Tocaba relanzar con nueva tecnología sin perder tracking, campañas ni usuarios. Hice benchmark, mapeé flujos y aprendí Figma para rediseñar UX. Resultado: app más fluida, datos estables y cero caída de rendimiento. Un reto de Product Owner equilibrando negocio y experiencia.',
@@ -301,6 +332,7 @@
       proud_4_t:'Cuando Excel peta, aprende Python 🐍',
       proud_4_d:'En Víntegris la base de datos ya no cabía en Excel. Aprendí Python (con ayuda de IA) para limpiar y automatizar procesos de CRM y monté dashboards en Looker y Data Studio para que todo el mundo pudiera usar los insights.',
 
+      /* Experience */
       exp_title:'Experiencia profesional',
 
       exp_freelance_h:'Consultora Digital · B2B SaaS y Marcas de Consumo',
@@ -342,17 +374,19 @@
       exp_agencies_3:'Social listening y reputación (Augure), contenidos (infografías, blogposts, vídeos, carruseles), PR digital e influencers. Estrategia social global.',
       exp_agencies_4:'<em>Clientes:</em> Gas Natural Fenosa, DIA España, Novartis, Danone, Nestlé Bebé, Reckitt Benckiser (Veet), Pastas Gallo, Font Vella, La Sirena, granini, Servihabitat, tommee tippee (UK), Gut Microbiota Worldwatch (UK). <strong>Logros:</strong> Premio ConSalud 🏆 y canales de atención con tiempos top.',
 
+      /* Skills */
       skills_title:'Habilidades relevantes',
 
       /* Curiosidades */
-      cur_title:'Fun facts',
+      cur_title:'Curiosidades sobre mí',
       cur_1:'Me crié detrás del mostrador de la tienda de mis padres. He vendido joyas, perfumes, sombreros y gofres desde que tengo uso de razón.',
       cur_2:'Siempre tengo algún proyectillo personal en mente: he creado una de las mayores comunidades de uno de mis hobbies y hasta he hecho un podcast con más de 300 oyentes.',
       cur_3:'Soy esa amiga que organiza las quedadas de grupo: el qué, el cuándo, el dónde y qué lleva cada uno.',
       cur_4:'En mis pocos ratos libres, me gusta ver series coreanas, chinas y japonesas. Es mi guilty pleasure que comparto con mis amigas.',
-      cur_5:'Me encanta estar en la naturaleza; en cuanto puedo me voy a mi caravana del camping, pero no me gusta subir montañas.',
-      cur_6:'Me encanta trastear tecnología: mi primera web la hice con Dreamweaver con 15 años y sin tener ni idea (ni miedo)',
+      cur_5:'Me encanta estar en la naturaleza; en cuanto puedo me voy a mi camping, pero no me gusta subir montañas.',
+      cur_6:'Me encanta trastear tecnología: mi primera web la hice con Dreamweaver con 15 años y sin tener ni idea.',
 
+      /* Final */
       final_line:'Let’s make marketing that even your grandma would click on 😉'
     }
   };
